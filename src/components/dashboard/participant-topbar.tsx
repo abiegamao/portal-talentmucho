@@ -1,8 +1,18 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Sun, Moon, Bell, Menu } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTransition } from "react";
+import { Bell, Menu, LogOut } from "lucide-react";
+import { ThemeTogglerButton } from "@/components/animate-ui/components/buttons/theme-toggler";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/animate-ui/components/radix/dropdown-menu";
+import { logout } from "@/app/actions/auth";
 
 const PAGE_TITLES: Record<string, string> = {
   "/participant": "Dashboard",
@@ -13,12 +23,13 @@ const PAGE_TITLES: Record<string, string> = {
 
 interface Props {
   fullName: string;
+  email: string;
   onMenuClick: () => void;
 }
 
-export function ParticipantTopbar({ fullName, onMenuClick }: Props) {
+export function ParticipantTopbar({ fullName, email, onMenuClick }: Props) {
   const pathname = usePathname();
-  const { resolvedTheme, setTheme } = useTheme();
+  const [, startTransition] = useTransition();
   const title = PAGE_TITLES[pathname] ?? "Dashboard";
   const initials = fullName
     .split(" ")
@@ -29,8 +40,8 @@ export function ParticipantTopbar({ fullName, onMenuClick }: Props) {
 
   return (
     <header
-      className="shrink-0 h-14 md:h-16 bg-white dark:bg-[var(--card)] md:rounded-2xl border-b border-[var(--beige-200)] dark:border-[var(--border)] md:border flex items-center px-4 md:px-6 gap-3"
-      style={{ boxShadow: "0 2px 12px -2px rgb(61 53 46 / 0.07)" }}
+      className="shrink-0 h-14 md:h-16 bg-white dark:bg-[var(--charcoal-900)] md:rounded-2xl border-b border-[var(--beige-200)] dark:border-white/5 md:border flex items-center px-4 md:px-6 gap-3"
+      style={{ boxShadow: "0 1px 8px -1px rgb(61 53 46 / 0.06)" }}
     >
       {/* Hamburger — mobile only */}
       <button
@@ -50,17 +61,13 @@ export function ParticipantTopbar({ fullName, onMenuClick }: Props) {
 
       <div className="flex items-center gap-1">
         {/* Theme toggle */}
-        <button
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-          className="w-9 h-9 rounded-xl flex items-center justify-center text-[var(--taupe-400)] hover:bg-[var(--beige-100)] dark:hover:bg-[var(--accent)] hover:text-[var(--espresso-700)] dark:hover:text-foreground transition-all duration-150"
+        <ThemeTogglerButton
+          modes={["light", "dark"]}
+          variant="ghost"
+          size="icon"
+          className="w-9 h-9 rounded-xl text-[var(--taupe-400)] hover:bg-[var(--beige-100)] dark:hover:bg-[var(--accent)] hover:text-[var(--espresso-700)] dark:hover:text-foreground"
           aria-label="Toggle theme"
-        >
-          {resolvedTheme === "dark" ? (
-            <Sun className="size-4" />
-          ) : (
-            <Moon className="size-4" />
-          )}
-        </button>
+        />
 
         {/* Notifications */}
         <button
@@ -70,16 +77,41 @@ export function ParticipantTopbar({ fullName, onMenuClick }: Props) {
           <Bell className="size-4" />
         </button>
 
-        {/* User chip */}
-        <div className="flex items-center gap-2 pl-2 ml-1 border-l border-[var(--beige-200)] dark:border-[var(--border)]">
-          <span className="text-sm font-medium text-[var(--espresso-800)] dark:text-foreground hidden sm:block">
-            {fullName.split(" ")[0]}
-          </span>
-          <div className="w-8 h-8 rounded-full bg-[var(--beige-200)] dark:bg-[var(--accent)] flex items-center justify-center shrink-0">
-            <span className="text-xs font-semibold text-[var(--espresso-700)] dark:text-foreground">
-              {initials}
-            </span>
-          </div>
+        {/* User dropdown */}
+        <div className="pl-2 ml-1 border-l border-[var(--beige-200)] dark:border-[var(--border)]">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-[var(--beige-100)] dark:hover:bg-[var(--accent)] transition-all duration-150"
+                aria-label="User menu"
+              >
+                <span className="text-sm font-medium text-[var(--espresso-800)] dark:text-foreground hidden sm:block">
+                  {fullName.split(" ")[0]}
+                </span>
+                <div className="w-8 h-8 rounded-full bg-[var(--beige-200)] dark:bg-[var(--accent)] flex items-center justify-center shrink-0">
+                  <span className="text-xs font-semibold text-[var(--espresso-700)] dark:text-foreground">
+                    {initials}
+                  </span>
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
+                <span className="font-semibold text-sm text-foreground">{fullName}</span>
+                <span className="font-normal text-xs text-muted-foreground truncate">{email}</span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant="destructive"
+                onSelect={() => startTransition(() => logout())}
+                className="cursor-pointer"
+              >
+                <LogOut />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
