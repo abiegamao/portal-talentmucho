@@ -12,6 +12,7 @@ interface Props {
 
 export function ParticipantShell({ fullName, email, children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-[var(--beige-50)] dark:bg-[var(--card)] md:p-3 md:gap-3">
@@ -28,12 +29,18 @@ export function ParticipantShell({ fullName, email, children }: Props) {
       <div
         className={[
           "fixed inset-y-0 left-0 z-50 w-72",
-          "md:relative md:z-auto md:w-60 md:shrink-0 md:inset-auto",
-          "transition-transform duration-300 ease-in-out",
+          sidebarCollapsed
+            ? "md:relative md:z-auto md:w-16 md:shrink-0 md:inset-auto"
+            : "md:relative md:z-auto md:w-60 md:shrink-0 md:inset-auto",
+          "transition-[width,transform] duration-300 ease-in-out",
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
         ].join(" ")}
       >
-        <ParticipantSidebar onClose={() => setSidebarOpen(false)} />
+        <ParticipantSidebar
+          onClose={() => setSidebarOpen(false)}
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={() => setSidebarCollapsed((c) => !c)}
+        />
       </div>
 
       {/* Right col */}
