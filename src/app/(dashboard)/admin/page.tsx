@@ -2,33 +2,75 @@ import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { Users, GraduationCap, BarChart2, CalendarCheck } from "lucide-react";
 
-const stats = [
-  { label: "Total Participants", value: "—", icon: Users },
-  { label: "Active Cohorts", value: "1", icon: GraduationCap },
-  { label: "Avg. Completion", value: "—", icon: BarChart2 },
-  { label: "Sessions This Month", value: "3", icon: CalendarCheck },
-];
-
-const participants = [
-  {
-    name: "Sample Participant",
-    email: "participant@example.com",
-    cohort: "Cohort 1",
-    sessionsCompleted: 3,
-    totalSessions: 9,
-    status: "active",
-  },
-];
-
 export default async function AdminDashboard() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  const firstName =
-    user?.user_metadata?.full_name?.split(" ")[0] || "Admin";
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+  const [
+    { data: { user } },
+    { count: participantCount },
+    { count: cohortCount },
+    { count: sessionsThisMonth },
+    { count: totalLessons },
+    { count: totalEnrollments },
+    { count: completedProgress },
+    profilesRes,
+    enrollmentsRes,
+    progressRes,
+  ] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "participant"),
+    supabase.from("courses").select("*", { count: "exact", head: true }).eq("is_published", true),
+    supabase.from("lessons").select("*", { count: "exact", head: true }).gte("created_at", startOfMonth),
+    supabase.from("lessons").select("*", { count: "exact", head: true }),
+    supabase.from("enrollments").select("*", { count: "exact", head: true }),
+    supabase.from("progress").select("*", { count: "exact", head: true }),
+    supabase.from("profiles").select("id, full_name, email, created_at").eq("role", "participant").order("created_at").limit(5),
+    supabase.from("enrollments").select("participant_id, course_id"),
+    supabase.from("progress").select("participant_id, lesson_id"),
+  ]);
+
+  const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "Admin";
+
+  const possible = (totalEnrollments ?? 0) * (totalLessons ?? 0);
+  const avgCompletion = possible > 0
+    ? Math.round(((completedProgress ?? 0) / possible) * 100)
+    : null;
+
+  const stats = [
+    { label: "Total Participants", value: String(participantCount ?? 0), icon: Users },
+    { label: "Active Cohorts", value: String(cohortCount ?? 0), icon: GraduationCap },
+    { label: "Avg. Completion", value: avgCompletion !== null ? `${avgCompletion}%` : "—", icon: BarChart2 },
+    { label: "Sessions This Month", value: String(sessionsThisMonth ?? 0), icon: CalendarCheck },
+  ];
+
+  const profiles = profilesRes.data ?? [];
+  const enrollments = enrollmentsRes.data ?? [];
+  const progressRows = progressRes.data ?? [];
+
+  const enrollmentMap: Record<string, string[]> = {};
+  for (const e of enrollments) {
+    if (!enrollmentMap[e.participant_id]) enrollmentMap[e.participant_id] = [];
+    enrollmentMap[e.participant_id].push(e.course_id);
+  }
+
+  const completedMap: Record<string, number> = {};
+  for (const p of progressRows) {
+    completedMap[p.participant_id] = (completedMap[p.participant_id] ?? 0) + 1;
+  }
+
+  const participants = profiles.map((p) => ({
+    id: p.id,
+    name: p.full_name ?? p.email,
+    email: p.email,
+    cohort: enrollmentMap[p.id]?.length ? "Cohort 1" : "—",
+    sessionsCompleted: completedMap[p.id] ?? 0,
+    totalSessions: totalLessons ?? 0,
+    status: enrollmentMap[p.id]?.length ? "active" : "pending",
+  }));
 
   return (
     <div className="p-8">
@@ -110,10 +152,12 @@ export default async function AdminDashboard() {
 
           {/* Rows */}
           {participants.map((p, i) => {
-            const pct = Math.round((p.sessionsCompleted / p.totalSessions) * 100);
+            const pct = p.totalSessions > 0
+              ? Math.round((p.sessionsCompleted / p.totalSessions) * 100)
+              : 0;
             return (
               <div
-                key={p.email}
+                key={p.id}
                 className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto_auto] gap-3 sm:gap-4 px-6 py-4 items-center transition-colors hover:bg-[var(--beige-50)] dark:hover:bg-white/[0.02]"
                 style={{
                   borderTop: i > 0 ? "1px solid var(--beige-200)" : undefined,
