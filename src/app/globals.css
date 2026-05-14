@@ -515,6 +515,11 @@
   width: 6px;
   height: 6px;
 }
+.tm-scrollbar::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
 .tm-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }

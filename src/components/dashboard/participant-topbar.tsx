@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { Bell, Menu, LogOut } from "lucide-react";
@@ -12,14 +13,41 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/animate-ui/components/radix/dropdown-menu";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { logout } from "@/app/actions/auth";
 
-const PAGE_TITLES: Record<string, string> = {
-  "/participant": "Dashboard",
-  "/participant/courses": "My Courses",
-  "/participant/progress": "Progress",
-  "/participant/certificates": "Certificates",
+const SEGMENT_LABELS: Record<string, string> = {
+  participant: "Dashboard",
+  courses: "My Courses",
+  progress: "Progress",
+  certificates: "Certificates",
+  "cohort-1": "Cohort 1",
+  "cohort-2": "Cohort 2",
+  "cohort-3": "Cohort 3",
 };
+
+const HIDDEN_SEGMENTS = new Set(["courses"]);
+
+function useBreadcrumbs() {
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
+  const visible = segments.filter((seg) => !HIDDEN_SEGMENTS.has(seg));
+  return visible.map((seg, i) => {
+    const originalIndex = segments.indexOf(seg);
+    return {
+      label: SEGMENT_LABELS[seg] ?? seg,
+      href: "/" + segments.slice(0, originalIndex + 1).join("/"),
+      isLast: i === visible.length - 1,
+    };
+  });
+}
 
 interface Props {
   fullName: string;
@@ -28,9 +56,8 @@ interface Props {
 }
 
 export function ParticipantTopbar({ fullName, email, onMenuClick }: Props) {
-  const pathname = usePathname();
+  const crumbs = useBreadcrumbs();
   const [, startTransition] = useTransition();
-  const title = PAGE_TITLES[pathname] ?? "Dashboard";
   const initials = fullName
     .split(" ")
     .map((n) => n[0])
@@ -52,12 +79,26 @@ export function ParticipantTopbar({ fullName, email, onMenuClick }: Props) {
         <Menu className="size-5" />
       </button>
 
-      <h1
-        className="flex-1 font-serif font-light text-[var(--charcoal-900)] dark:text-foreground"
-        style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
-      >
-        {title}
-      </h1>
+      <Breadcrumb className="flex-1 min-w-0">
+        <BreadcrumbList>
+          {crumbs.map((crumb, i) => (
+            <React.Fragment key={crumb.href}>
+              {i > 0 && <BreadcrumbSeparator />}
+              <BreadcrumbItem>
+                {crumb.isLast ? (
+                  <BreadcrumbPage className="font-serif font-light text-[var(--charcoal-900)] dark:text-foreground truncate" style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}>
+                    {crumb.label}
+                  </BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink href={crumb.href} className="font-sans text-sm text-[var(--taupe-400)] hover:text-[var(--charcoal-900)] dark:hover:text-foreground">
+                    {crumb.label}
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </React.Fragment>
+          ))}
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <div className="flex items-center gap-1">
         {/* Theme toggle */}
