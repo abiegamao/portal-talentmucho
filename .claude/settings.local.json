@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"D:\\\\ReactJS\\\\TALENT-MUCHO-CLIENTS\\\\app-talentmucho\\\\TalentMucho Design System\" -Recurse | ForEach-Object { $_.FullName })"
+    ]
+  }
+}
