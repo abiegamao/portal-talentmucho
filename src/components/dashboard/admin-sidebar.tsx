@@ -23,7 +23,7 @@ import {
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/participants", label: "Participants", icon: Users },
-  { href: "/admin/cohorts", label: "Cohorts", icon: GraduationCap },
+  { href: "/admin/courses", label: "Courses", icon: GraduationCap },
   { href: "/admin/progress", label: "Progress", icon: BarChart2 },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
@@ -126,7 +126,10 @@ export function AdminSidebar({ onClose, collapsed, onToggleCollapse }: Props) {
       <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto overflow-x-hidden">
         <TooltipProvider>
           {nav.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href;
+            const active =
+              href === "/admin"
+                ? pathname === href
+                : pathname === href || pathname.startsWith(href + "/");
 
             const linkContent = (
               <Link

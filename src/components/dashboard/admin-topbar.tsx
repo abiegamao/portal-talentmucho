@@ -26,7 +26,7 @@ import { logout } from "@/app/actions/auth";
 const SEGMENT_LABELS: Record<string, string> = {
   admin: "Dashboard",
   participants: "Participants",
-  cohorts: "Cohorts",
+  courses: "Courses",
   progress: "Progress",
   settings: "Settings",
   "cohort-1": "Cohort 1",

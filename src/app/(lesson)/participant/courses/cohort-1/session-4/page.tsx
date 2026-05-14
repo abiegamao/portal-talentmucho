@@ -5,19 +5,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CodeTabs } from "@/components/animate-ui/components/animate/code-tabs";
 
 const SESSION = {
-  tag: "W1 · S2",
-  color: "#C4A882",
-  weekLabel: "Week 1 · Knowing Claude",
-  title: "Custom instructions, file uploads",
-  date: "Sun, Jun 7",
+  tag: "W2 · S3",
+  color: "#7D6B5A",
+  weekLabel: "Week 2 · Delegating to Claude",
+  title: "AI employees — what Cowork makes real",
+  date: "Sat, Jun 13",
   time: "10 AM–1 PM EST",
   videoUrl: null as string | null,
   description:
-    "You'll write your first custom instructions, upload the files that shape Claude's responses, and configure your brand voice. By the end of this session you'll have all 3 of your Claude.ai Projects ready to use.",
+    "An introduction to AI employees — what they are, what Cowork makes possible, and how real businesses are using them today. You'll see a live demo and leave with a clear plan for what you're building in Session 4.",
   resources: [
-    { label: "Custom instructions template", href: "#" },
-    { label: "Brand voice worksheet", href: "#" },
-    { label: "Week 1 deliverable checklist", href: "#" },
+    { label: "Cowork platform overview", href: "#" },
+    { label: "AI employee role examples", href: "#" },
+    { label: "Session slides", href: "#" },
   ],
 };
 
@@ -26,78 +26,78 @@ const PREV     = "/participant/courses/cohort-1/session-3";
 const NEXT     = "/participant/courses/cohort-1/session-5";
 
 const bringList = [
-  "Your Project from Session 1 open in Claude.ai",
-  "A writing sample in your voice (email, proposal, or social post)",
-  "One SOP, process doc, or FAQ (PDF, Word, or plain text)",
-  "Your Bootcamp Map answers for reference",
+  "Your 3 configured Claude.ai Projects from Week 1",
+  "One repetitive task in your business that takes 30+ min/week",
+  "Real examples of requests you get from clients (copy from emails or messages)",
 ];
 
 const objectives = [
-  "Write custom instructions that shape every conversation in a Project",
-  "Know which documents to upload — and why",
-  "Understand how Claude uses uploaded files in practice",
-  "Complete all 3 configured Claude.ai Projects",
+  "Understand the real difference between an AI tool and an AI employee",
+  "Know what Cowork adds that Claude.ai alone can't do",
+  "Identify which role in your business is right for your first AI employee",
+  "Draft a role description before Session 4",
 ];
 
-const projects = [
-  { name: "Client-Facing Work", purpose: "Writing, emails, proposals, content — anything a client might read" },
-  { name: "Internal Operations", purpose: "SOPs, processes, team communication, checklists, planning" },
-  { name: "Thinking Partner", purpose: "Strategy, decisions, analysis, brainstorming — your confidential advisor" },
-];
-
-const uploadGuide = [
-  { file: "A writing sample", why: "Teaches Claude your tone and voice so it writes the way you actually sound" },
-  { file: "Service or product descriptions", why: "Claude describes what you offer accurately, not generically" },
-  { file: "An SOP or process doc", why: "Claude follows your process, not a generic best practice" },
-  { file: "Client FAQ or common questions", why: "Claude answers using your actual answers, not guesses" },
+const roleExamples = [
+  { name: "Onboarding Coordinator", handles: "Greets new clients, sends welcome sequences, answers FAQs, collects intake info", escalates: "Unusual requests, unhappy clients, contract questions" },
+  { name: "Content Writer", handles: "Writes in your brand voice, formats for each platform, drafts from briefs", escalates: "Sensitive topics, strategy decisions, client-facing launches" },
+  { name: "Ops Assistant", handles: "Processes intake forms, routes requests, drafts SOPs, summarizes notes", escalates: "Anything requiring judgment calls or external action" },
+  { name: "Sales Qualifier", handles: "Responds to inquiries, asks qualifying questions, scores leads, schedules calls", escalates: "Ready-to-close prospects, pricing conversations, custom deals" },
 ];
 
 const PROMPTS: Record<string, string> = {
-  "Custom instructions template": `You are my business assistant for [Business Name].
+  "Identify my best first AI employee role": `I run a [type of business]. Here's how my work breaks down:
 
-ABOUT MY BUSINESS:
-[2–3 sentences: what you do, who you serve, how you're different from competitors]
+Tasks I do every day: [list 3–5 daily tasks]
+Tasks I do every week: [list 3–5 weekly tasks]
+Tasks I hate doing or always postpone: [list 2–3]
+Tasks that eat up my time but feel repetitive: [list 2–3]
 
-MY CUSTOMERS:
-[Describe your ideal client — their situation, what they're trying to solve, how they make decisions]
+My current biggest bottleneck is: [describe — where does work pile up or slow down?]
 
-TONE AND STYLE:
-- Voice: [formal / conversational / warm / direct — pick one that fits you]
-- Write like: [describe your communication style in 1 sentence, or paste an example phrase]
-- Response format: [brief bullets / full paragraphs / depends on task — tell Claude your preference]
-- Response length: [short and punchy / thorough and detailed / match the task]
+Based on this, suggest:
+1. The single best role for my first AI employee (name the role)
+2. What they would specifically handle vs. escalate to me
+3. Why this role would have the most impact on my business
+4. What I need to prepare before building them`,
 
-ALWAYS:
-- Reference my business context when giving advice — no generic tips
-- Ask one clarifying question before writing anything client-facing
-- Flag when you're uncertain or when something needs my review before it goes out
-- Use the tone from my uploaded writing sample
+  "Draft a role description": `I want to create an AI employee for my business. Here's the role I've identified:
 
-NEVER:
-- Make up facts about my business, my offers, or my clients
-- Use corporate jargon or buzzwords I haven't used myself
-- Send anything to a client without noting it needs my approval first
-- Start responses with "Certainly!" or "Great question!"`,
+Role name: [what you'll call this employee — e.g. "Alex"]
+Job title: [e.g. Client Onboarding Coordinator]
+Primary responsibility: [one sentence — what is their core job?]
 
-  "Ask Claude to improve your instructions": `I've just written my custom instructions for this Project. Read them carefully, then tell me:
+They will handle these tasks autonomously:
+1. [task 1 — be specific about what "handling" looks like]
+2. [task 2]
+3. [task 3]
 
-1. What's clear and well-defined (what you can do confidently with these instructions)
-2. What's vague or missing (where you'd have to guess)
-3. What one addition would make you 20% more useful to me
+They will escalate to me when:
+1. [escalation trigger 1]
+2. [escalation trigger 2]
 
-Then suggest a revised version of any weak section.`,
+The tone they should use: [describe — warm and professional / direct and efficient / friendly and casual]
+The clients they'll interact with: [describe who your clients are]
 
-  "Check Claude knows your business": `Based on my custom instructions and any files I've uploaded, summarize:
+Write me:
+1. A one-paragraph description of this AI employee
+2. A list of 5 rules they must always follow
+3. A list of 3 things they must never do`,
 
-1. What you know about my business (be specific — not general)
-2. What types of tasks you can handle confidently in this Project
-3. What you're still uncertain about
-4. One file or piece of information that, if I added it, would make you significantly more useful
+  "Write the system prompt": `Using the role description I just gave you, write a complete system prompt for this AI employee.
 
-If anything in my instructions is contradictory or unclear, flag it now.`,
+The system prompt should:
+- Open with their identity (name, role, and who they work for)
+- Include the full business context they need
+- List their responsibilities clearly
+- Define their tone and communication style with examples
+- Specify what to do when they're unsure
+- State clearly what they escalate and how
+
+Format it so I can paste it directly into Cowork.`,
 };
 
-export default function Session4Page() {
+export default function Session5Page() {
   return (
     <div className="flex-1 bg-[var(--beige-50)] dark:bg-background flex flex-col overflow-hidden min-h-0">
 
@@ -108,7 +108,7 @@ export default function Session4Page() {
           className="inline-flex items-center gap-1.5 text-sm text-[var(--taupe-400)] hover:text-[var(--charcoal-900)] dark:hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
-          W1 · S1
+          W1 · S2
         </Link>
 
         <div className="flex items-center gap-2">
@@ -127,7 +127,7 @@ export default function Session4Page() {
           href={NEXT}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground hover:opacity-70 transition-opacity"
         >
-          W2 · S3
+          W2 · S4
           <ArrowRight className="size-3.5" />
         </Link>
       </header>
@@ -164,76 +164,94 @@ export default function Session4Page() {
             </div>
           </section>
 
-          {/* What are custom instructions */}
+          {/* Tool vs Employee */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What custom instructions actually do</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">The difference between a tool and an employee</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-4">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Custom instructions are text that Claude reads <strong className="font-medium">before every single message</strong> in a Project. Think of them as the onboarding document you&apos;d give a new contractor on their first day — who you are, how you work, what you expect, and what not to do.
+                A hammer is a tool. You pick it up when you need it, use it, put it down. It has no role, no identity, no judgment. You always have to be present to use it.
               </p>
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Without custom instructions, every message starts from scratch. Claude doesn&apos;t know if you want bullet points or paragraphs, formal or casual, long-form or brief. With them, Claude already knows — and it shows in every response.
+                An employee has a role. They know what they&apos;re responsible for. They handle things without you asking each time. They escalate what needs you. They run whether you&apos;re watching or not.
               </p>
-              <div className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4">
-                <p className="text-xs font-semibold text-[var(--taupe-400)] uppercase tracking-[0.12em] mb-2">The four parts of great custom instructions</p>
-                <ol className="flex flex-col gap-2">
-                  {[
-                    { label: "WHO YOU ARE", desc: "2–3 sentences about your business, your customers, and your role" },
-                    { label: "TONE & STYLE", desc: "How you communicate — voice, format, response length" },
-                    { label: "ALWAYS DO", desc: "What Claude should always do in this Project" },
-                    { label: "NEVER DO", desc: "What Claude should never do — your non-negotiables" },
-                  ].map((part, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="font-semibold text-[var(--charcoal-900)] dark:text-foreground shrink-0 min-w-[90px]">{part.label}</span>
-                      <span className="text-[var(--taupe-400)] font-light">{part.desc}</span>
-                    </li>
-                  ))}
-                </ol>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4 flex flex-col gap-2">
+                  <p className="text-xs font-semibold text-[var(--taupe-400)] uppercase tracking-[0.12em]">Claude.ai Projects — tool</p>
+                  <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">You open it. You ask it something. It helps. You close it. You&apos;re always in the loop. Great for active work: writing, analysis, thinking.</p>
+                </div>
+                <div className="rounded-xl border border-[var(--clay-500)]/30 bg-[var(--clay-500)]/5 p-4 flex flex-col gap-2">
+                  <p className="text-xs font-semibold text-[var(--clay-500)] uppercase tracking-[0.12em]">Cowork AI employee ✓</p>
+                  <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">Has a name, a role, and persistent context. Handles defined tasks. Escalates what needs you. Can run interactions you&apos;re not part of.</p>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* What to upload */}
+          {/* What Cowork adds */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What to upload — and why</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What Cowork adds that Claude.ai alone can&apos;t do</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
-              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Files you upload to a Project stay there permanently. Claude can reference them in every conversation. The goal is to give Claude the same reference materials you&apos;d give a new team member.
-              </p>
-              <div className="flex flex-col gap-2">
-                {uploadGuide.map((item) => (
-                  <div key={item.file} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.file}</p>
-                      <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">{item.why}</p>
-                    </div>
+              {[
+                { feature: "Named identity", desc: "Your AI employee has a name, a defined role, and a persistent briefing — they show up as someone, not something." },
+                { feature: "Role specialization", desc: "Scoped context, specific workflows, and rules tailored to exactly one job. Not a generalist — a specialist." },
+                { feature: "Delegation", desc: "You assign them work and they run it in your style. You review what needs review; the rest handles itself." },
+                { feature: "Escalation logic", desc: "Defined rules for when they act autonomously vs. when they flag something for you — so nothing falls through the cracks." },
+              ].map((item) => (
+                <div key={item.feature} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.feature}</p>
+                    <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5 leading-relaxed">{item.desc}</p>
                   </div>
-                ))}
-              </div>
-              <p className="text-xs text-[var(--taupe-400)] font-light">Accepted formats: PDF, Word, plain text, markdown. Keep files under 25 MB.</p>
-            </div>
-          </section>
-
-          {/* Three Projects */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your 3 Projects — what each one is for</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {projects.map((p, i) => (
-                <div key={p.name} className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-4 flex flex-col gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--taupe-400)]">Project {i + 1}</span>
-                  <p className="font-medium text-sm text-[var(--charcoal-900)] dark:text-foreground">{p.name}</p>
-                  <p className="text-xs text-[var(--taupe-400)] font-light leading-relaxed">{p.purpose}</p>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-[var(--taupe-400)] font-light">Each Project gets its own custom instructions tailored to its purpose. The Client-Facing Project should be more formal; the Thinking Partner can be direct and candid.</p>
+          </section>
+
+          {/* Role examples */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Real role examples — what other businesses have built</p>
+            <div className="flex flex-col gap-3">
+              {roleExamples.map((role) => (
+                <div key={role.name} className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-4 flex flex-col gap-2">
+                  <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{role.name}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <span className="text-[var(--taupe-400)] font-semibold uppercase tracking-[0.1em]">Handles: </span>
+                      <span className="text-[var(--charcoal-900)] dark:text-foreground font-light">{role.handles}</span>
+                    </div>
+                    <div>
+                      <span className="text-[var(--taupe-400)] font-semibold uppercase tracking-[0.1em]">Escalates: </span>
+                      <span className="text-[var(--charcoal-900)] dark:text-foreground font-light">{role.escalates}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Roles that don't work */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Roles that don&apos;t work well yet</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-[var(--card)] p-5 flex flex-col gap-2">
+              {[
+                "Roles that need live data (current inventory, real-time pricing, live calendar availability)",
+                "Roles that require actual system access (sending emails autonomously, booking appointments)",
+                "Roles with too much judgment involved (final financial decisions, legal advice, sensitive HR situations)",
+              ].map((item, i) => (
+                <p key={i} className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed flex items-start gap-2">
+                  <span className="text-[var(--taupe-400)] shrink-0 mt-0.5">×</span>
+                  {item}
+                </p>
+              ))}
+              <p className="text-xs text-[var(--taupe-400)] font-light mt-1">These limitations will change as the tools evolve. For now, start with roles that run on information, writing, and structured responses.</p>
+            </div>
           </section>
 
           {/* Prompts */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — copy and use these</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — use these to design your first AI employee</p>
             <p className="text-sm text-[var(--taupe-400)] -mt-1">
-              Start with the <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Custom instructions template</strong> — paste it into your Project&apos;s custom instructions, fill in every bracket, and save. Then use the other two to verify and refine.
+              Run these in your <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Thinking Partner</strong> Project — it&apos;s the right space for strategic decisions like this.
             </p>
             <CodeTabs codes={PROMPTS} lang="markdown" />
           </section>
@@ -242,14 +260,14 @@ export default function Session4Page() {
           <section className="flex flex-col gap-3">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your exercise for this session</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-100)] dark:bg-[var(--card)] p-5 flex flex-col gap-3">
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Complete before Week 2:</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Bring these to Session 4:</p>
               <ol className="flex flex-col gap-2">
                 {[
-                  "Write custom instructions for your Client-Facing Project using the template above",
-                  "Upload at least one file (writing sample or SOP) to that Project",
-                  "Use the \"Check Claude knows your business\" prompt to verify Claude got it right",
-                  "Create Projects 2 and 3 with their own tailored custom instructions",
-                  "Add at least one file to each Project",
+                  "Use the \"Identify my best first AI employee role\" prompt and commit to one role",
+                  "Draft the role description using the template",
+                  "Collect 3 real requests from your clients (actual emails or messages you've received)",
+                  "Write a draft system prompt using the third tab above",
+                  "Come to Session 4 ready to paste your system prompt into Cowork and test it live",
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--charcoal-900)] dark:text-foreground">
                     <span className="size-5 shrink-0 rounded-full border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[10px] font-semibold text-[var(--taupe-400)] mt-0.5">{i + 1}</span>
@@ -260,19 +278,11 @@ export default function Session4Page() {
             </div>
           </section>
 
-          {/* Deliverable */}
-          <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)] mb-2">Week 1 Deliverable</p>
-            <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">
-              3 configured Claude.ai Projects — each with custom instructions and at least one uploaded file that makes Claude context-aware for that type of work.
-            </p>
-          </div>
-
           {/* Next session card */}
           <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: AI employees — what Cowork makes real</p>
-              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 2 · Session 3 — Sat, Jun 13</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Build and test your first AI employee live</p>
+              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 2 · Session 4 — Sun, Jun 14</p>
             </div>
             <Link
               href={NEXT}

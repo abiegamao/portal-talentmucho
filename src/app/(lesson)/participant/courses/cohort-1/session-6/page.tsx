@@ -5,19 +5,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CodeTabs } from "@/components/animate-ui/components/animate/code-tabs";
 
 const SESSION = {
-  tag: "W2 · S4",
-  color: "#7D6B5A",
-  weekLabel: "Week 2 · Delegating to Claude",
-  title: "Build and test your first AI employee live",
-  date: "Sun, Jun 14",
+  tag: "W3 · S5",
+  color: "#5A7A6B",
+  weekLabel: "Week 3 · Building with Claude",
+  title: "Claude Code — your first build",
+  date: "Sat, Jun 20",
   time: "10 AM–1 PM EST",
   videoUrl: null as string | null,
   description:
-    "You'll build your first named AI employee in Cowork from scratch: write the briefing, configure the role, and run it against real scenarios from your own business. By the end, your AI employee is live and tested.",
+    "Claude Code makes building with AI tangible — no prior coding needed. We'll set up your environment, understand the build loop, and complete a small business tool together so you feel the mechanics before the big build in Session 6.",
   resources: [
-    { label: "AI employee briefing template", href: "#" },
-    { label: "Testing scenarios worksheet", href: "#" },
-    { label: "Week 2 deliverable checklist", href: "#" },
+    { label: "Claude Code setup guide", href: "#" },
+    { label: "Build loop reference", href: "#" },
+    { label: "Session slides", href: "#" },
   ],
 };
 
@@ -26,92 +26,103 @@ const PREV     = "/participant/courses/cohort-1/session-5";
 const NEXT     = "/participant/courses/cohort-1/session-7";
 
 const bringList = [
-  "The role you defined in Session 3 (name, title, responsibilities)",
-  "Your draft system prompt from the Session 3 exercise",
-  "3 real client requests (actual emails or messages you&apos;ve received)",
+  "Laptop with Node.js v18 or later installed (nodejs.org)",
+  "Your Anthropic account credentials (same email as Claude.ai)",
+  "A specific idea: one business tool or dashboard you want to build",
 ];
 
 const objectives = [
-  "Create a named AI employee in Cowork",
-  "Brief them with a tested system prompt",
-  "Run 3 real test scenarios and know what good looks like",
-  "Iterate and improve based on what breaks",
+  "Install Claude Code and confirm it runs on your machine",
+  "Understand what Claude Code can and can't build",
+  "Submit your first build prompt and see code generated",
+  "Know how to describe a build prompt vs. a chat prompt",
 ];
 
-const buildSteps = [
-  "Open Cowork and click \"New Employee\"",
-  "Give them a name (first name only — e.g. \"Alex\") and a job title",
-  "Paste your system prompt into the briefing field",
-  "Add reference files (same documents from your Claude.ai Project are a good start)",
-  "Set your escalation rules — what should automatically come to you",
-  "Save and open a test conversation",
+const canBuild = [
+  "Custom dashboards — show your key metrics in a single view",
+  "Internal tools — intake forms, checklists, calculators",
+  "Client-facing portals — onboarding forms, status pages, resource hubs",
+  "Report generators — weekly summary builders, client update templates",
+  "Data entry and display tools — anything you currently track in a spreadsheet",
 ];
 
-const PROMPTS: Record<string, string> = {
-  "System prompt template": `You are [Employee Name], [Job Title] for [Business Name].
+const cannotBuild = [
+  "Anything needing a live database connection (without additional setup)",
+  "Real-time integrations with external services (without API configuration)",
+  "Production-deployed apps (Claude Code builds; you need hosting separately)",
+];
 
-ABOUT THE BUSINESS:
-[Business Name] is a [type of business]. We serve [describe your clients — who they are, what they're trying to achieve, what they care about].
+const INSTALL_COMMANDS: Record<string, string> = {
+  "1. Check Node.js version": `node --version
+# Should return v18.0.0 or higher
+# If not installed: download from nodejs.org`,
 
-YOUR ROLE:
-Your job is to [primary responsibility in one sentence]. You are the first point of contact for [type of interactions this employee handles].
+  "2. Install Claude Code": `npm install -g @anthropic-ai/claude-code`,
 
-YOUR RESPONSIBILITIES:
-You handle the following autonomously:
-- [Task 1: be specific — e.g. "Respond to new client inquiries within 24 hours with a warm, professional greeting and 3 qualifying questions"]
-- [Task 2]
-- [Task 3]
+  "3. Verify installation": `claude --version`,
 
-You escalate to [Owner/Manager Name] when:
-- [Escalation trigger 1 — e.g. "A client expresses frustration or dissatisfaction"]
-- [Escalation trigger 2]
-- [Escalation trigger 3 — e.g. "A request falls outside the services we offer"]
+  "4. Start in your project folder": `# Create a folder for your build first
+mkdir my-dashboard
+cd my-dashboard
 
-TONE AND COMMUNICATION STYLE:
-- Voice: [warm and professional / direct and efficient / friendly and approachable]
-- Always write in full sentences. No bullet points in client-facing messages.
-- Sign off with: [how you want messages to close]
-- Never use: [words or phrases you want to avoid — e.g. "synergy", "circle back", "as per my last email"]
-
-WHEN IN DOUBT:
-If you&apos;re unsure how to handle something, say: "That&apos;s a great question — let me check with [Owner Name] and get back to you shortly." Do not guess. Do not make commitments you can&apos;t keep.`,
-
-  "Test scenario pack": `Generate 3 test scenarios for my AI employee based on the system prompt I just gave you.
-
-The scenarios should be:
-
-SCENARIO 1 — EASY CASE:
-A typical, straightforward interaction this employee handles all the time. They should be able to respond confidently and correctly.
-
-SCENARIO 2 — EDGE CASE:
-An unusual or ambiguous situation where the right answer isn&apos;t obvious. The employee should ask one clarifying question rather than guessing.
-
-SCENARIO 3 — OUT OF SCOPE:
-A request that is clearly outside this employee&apos;s role. The employee should acknowledge this gracefully and redirect the person without leaving them stuck.
-
-For each scenario:
-- Write the incoming message (as if from a real client)
-- Write what an ideal response looks like
-- Note what a bad response would look like (so I know what to watch for)`,
-
-  "Debrief and iterate": `I just tested my AI employee against 3 scenarios. Here&apos;s what happened:
-
-SCENARIO 1 result: [paste what your employee actually said]
-What worked: [what was good]
-What was off: [what missed the mark — tone, accuracy, format?]
-
-SCENARIO 2 result: [paste what your employee actually said]
-What worked: [what was good]
-What was off: [what missed the mark]
-
-SCENARIO 3 result: [paste what your employee actually said]
-What worked: [what was good]
-What was off: [what missed the mark]
-
-Based on this, rewrite my system prompt to fix the problems I found. Show me the specific sections you changed and explain why each change helps.`,
+# Then start Claude Code
+claude`,
 };
 
-export default function Session6Page() {
+const BUILD_PROMPTS: Record<string, string> = {
+  "First build prompt": `Build me a [type of tool — e.g. business dashboard, client intake form, weekly report template] for my [type of business].
+
+This will be used by: [who — just me / my team / my clients]
+
+It needs to:
+1. [core function 1 — be specific, e.g. "Show my 5 key weekly metrics as large numbers at the top"]
+2. [core function 2 — e.g. "Display a list of active client projects with their status"]
+3. [core function 3 — e.g. "Include a section for my top 3 priorities this week"]
+
+How it should look:
+[describe visually — e.g. "Clean, minimal design with a white background. Metrics in cards across the top. Table below. Mobile-friendly."]
+
+Tech requirements:
+- Use React
+- Use static sample data I can update manually later
+- No backend or database needed
+- Make it run with: npm run dev
+
+Keep it simple. Version 1 — get something real on screen.`,
+
+  "Iterate on what you built": `I can see the first version. Here&apos;s what I want to change:
+
+KEEP:
+- [what&apos;s working well — be specific]
+
+CHANGE:
+- [element] → [what it should be instead — e.g. "The font is too small → make all body text at least 16px"]
+- [element] → [change — e.g. "The color of the header → change it to a dark navy (#1a2332)"]
+- [element] → [change — e.g. "The table has too many columns → remove the 'Last Modified' column"]
+
+ADD:
+- [new element, if any — e.g. "Add a footer with today&apos;s date"]
+
+REMOVE:
+- [what to cut, if anything — e.g. "Remove the chart — just the numbers for now"]
+
+Make only these changes. Don&apos;t redesign anything else.`,
+
+  "Describe what&apos;s wrong precisely": `The build has an issue. I want to fix this specifically:
+
+WHAT&apos;S WRONG:
+[Describe what you see that&apos;s wrong — not "it looks bad" but "the revenue number shows $0 instead of the sample data values"]
+
+WHERE IT IS:
+[Location on the page — e.g. "Top left card" / "The table in the middle section" / "The navigation bar"]
+
+WHAT IT SHOULD DO:
+[Describe the correct behavior — e.g. "The revenue card should show $12,400 using the sample data in the data file"]
+
+Don&apos;t change anything else while fixing this.`,
+};
+
+export default function Session7Page() {
   return (
     <div className="flex-1 bg-[var(--beige-50)] dark:bg-background flex flex-col overflow-hidden min-h-0">
 
@@ -122,7 +133,7 @@ export default function Session6Page() {
           className="inline-flex items-center gap-1.5 text-sm text-[var(--taupe-400)] hover:text-[var(--charcoal-900)] dark:hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
-          W2 · S3
+          W2 · S4
         </Link>
 
         <div className="flex items-center gap-2">
@@ -141,7 +152,7 @@ export default function Session6Page() {
           href={NEXT}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground hover:opacity-70 transition-opacity"
         >
-          W3 · S5
+          W3 · S6
           <ArrowRight className="size-3.5" />
         </Link>
       </header>
@@ -178,89 +189,111 @@ export default function Session6Page() {
             </div>
           </section>
 
-          {/* Three-part brief */}
+          {/* What Claude Code is */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">The three-part employee brief</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-4">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What Claude Code actually is</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Every AI employee that works well has three things fully defined before they go live. If any of these is vague, the employee will produce vague, inconsistent output.
+                Claude Code is not a chatbot. It&apos;s an agentic coding tool that runs in your terminal. It reads your files, writes new ones, and builds software by working through tasks step by step — more like a developer sitting next to you than a tool you query.
               </p>
-              <div className="flex flex-col gap-3">
-                {[
-                  { label: "1. Identity", desc: "Who they are, what their job title is, and how they sound. A name makes them real — it&apos;s easier to refine \"Alex\" than \"my AI assistant.\"" },
-                  { label: "2. Context", desc: "Your business, your clients, your standards, and your voice. This is where you upload your files and write your business description. The more specific, the better." },
-                  { label: "3. Rules", desc: "What they handle autonomously vs. what they escalate. Without clear rules, your employee will either over-reach (making decisions they shouldn&apos;t) or under-reach (asking you about everything)." },
-                ].map((part) => (
-                  <div key={part.label} className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4">
-                    <p className="text-sm font-semibold text-[var(--charcoal-900)] dark:text-foreground mb-1">{part.label}</p>
-                    <p className="text-sm text-[var(--taupe-400)] font-light leading-relaxed">{part.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Build steps */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Building in Cowork — step by step</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
-              <ol className="flex flex-col gap-3">
-                {buildSteps.map((step, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="size-6 shrink-0 rounded-full bg-[var(--beige-100)] dark:bg-white/5 border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[11px] font-semibold text-[var(--taupe-400)]">
-                      {i + 1}
+              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
+                You don&apos;t need to know how to code. You describe what you want in plain language, Claude Code builds it, you review and approve each step, and you iterate until it&apos;s right. The build loop is: describe → review → approve → iterate.
+              </p>
+              <div className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4">
+                <p className="text-xs font-semibold text-[var(--taupe-400)] uppercase tracking-[0.12em] mb-2">The build loop</p>
+                <div className="flex items-center gap-2 flex-wrap text-sm text-[var(--charcoal-900)] dark:text-foreground">
+                  {["Describe what you want", "Claude builds it", "You review the code", "You approve the change", "See it in the browser", "Iterate"].map((step, i, arr) => (
+                    <span key={step} className="flex items-center gap-2">
+                      <span className="font-light">{step}</span>
+                      {i < arr.length - 1 && <ArrowRight className="size-3 text-[var(--taupe-400)] shrink-0" />}
                     </span>
-                    <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed pt-0.5">{step}</p>
-                  </li>
-                ))}
-              </ol>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* Testing */}
+          {/* Can and can't build */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What good looks like — testing all 3 scenarios</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What it can (and can&apos;t) build for your business</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
+                <p className="text-xs font-semibold text-[var(--clay-500)] uppercase tracking-[0.12em]">Can build ✓</p>
+                <ul className="flex flex-col gap-2">
+                  {canBuild.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-[var(--charcoal-900)] dark:text-foreground">
+                      <span className="text-[var(--clay-500)] shrink-0 mt-0.5">·</span>
+                      <span className="font-light leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-5 flex flex-col gap-3">
+                <p className="text-xs font-semibold text-[var(--taupe-400)] uppercase tracking-[0.12em]">Can&apos;t do (without more setup) ×</p>
+                <ul className="flex flex-col gap-2">
+                  {cannotBuild.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-[var(--charcoal-900)] dark:text-foreground">
+                      <span className="text-[var(--taupe-400)] shrink-0 mt-0.5">×</span>
+                      <span className="font-light leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Anatomy of a build prompt */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">The anatomy of a great build prompt</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-4">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Before you declare your AI employee ready, run them through three types of scenarios. One easy, one ambiguous, one out of scope. Most employees fail the edge cases first — and that&apos;s where the iteration happens.
+                The most common reason a Claude Code build comes out wrong is a vague prompt. Claude Code is precise — it builds exactly what you describe. If you describe something vague, you get something generic. If you describe something specific, you get something useful.
               </p>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
                 {[
-                  { scenario: "Easy case", expect: "Clean, accurate, sounds like your business. If this fails, your context or tone instructions are wrong." },
-                  { scenario: "Edge case", expect: "Asks one good clarifying question before proceeding. If your employee guesses instead of asking, add a rule: \"When unsure, ask one question.\"" },
-                  { scenario: "Out of scope", expect: "Acknowledges it&apos;s outside their role and tells the person exactly what to do next (contact you, wait, who to call). Never leaves them hanging." },
-                ].map((item) => (
-                  <div key={item.scenario} className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4 flex flex-col gap-1.5">
-                    <p className="text-sm font-semibold text-[var(--charcoal-900)] dark:text-foreground">{item.scenario}</p>
-                    <p className="text-xs text-[var(--taupe-400)] font-light leading-relaxed">{item.expect}</p>
+                  { label: "WHAT", desc: "Exactly what you&apos;re building — dashboard, form, tool, report generator" },
+                  { label: "FOR WHO", desc: "Who will use it — just you, your team, or your clients" },
+                  { label: "DATA", desc: "What information goes in and comes out — list the specific metrics or fields" },
+                  { label: "LOOK", desc: "How it should appear — describe visually, not technically (\"cards at top, table below\" is better than \"grid layout\")" },
+                  { label: "TECH", desc: "Keep it simple — React, static sample data, no backend. Ask for npm run dev to start it." },
+                ].map((part) => (
+                  <div key={part.label} className="flex items-start gap-3">
+                    <span className="text-xs font-bold text-[var(--taupe-400)] uppercase tracking-[0.1em] min-w-[48px] mt-0.5">{part.label}</span>
+                    <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">{part.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           </section>
 
-          {/* Prompts */}
+          {/* Install commands */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — copy and use these</p>
-            <p className="text-sm text-[var(--taupe-400)] -mt-1">
-              Start with the <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">System prompt template</strong> — paste it into Cowork as your employee&apos;s brief. Use <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Test scenario pack</strong> in Claude.ai to generate realistic test cases. After testing, use <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Debrief and iterate</strong> to improve.
-            </p>
-            <CodeTabs codes={PROMPTS} lang="markdown" />
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Setup — install Claude Code</p>
+            <p className="text-sm text-[var(--taupe-400)] -mt-1">Run these in your terminal in order. If you get stuck on any step, paste the error into your Claude.ai Project and ask for help.</p>
+            <CodeTabs codes={INSTALL_COMMANDS} lang="bash" />
           </section>
 
-          {/* Exercise */}
+          {/* Build prompts */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your exercise for this session</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Build prompts — use these inside Claude Code</p>
+            <p className="text-sm text-[var(--taupe-400)] -mt-1">
+              Once Claude Code is running (<code className="text-xs bg-[var(--beige-100)] dark:bg-white/10 px-1.5 py-0.5 rounded font-mono">claude</code> in your terminal), paste these prompts directly into it.
+            </p>
+            <CodeTabs codes={BUILD_PROMPTS} lang="markdown" />
+          </section>
+
+          {/* What to bring to session 8 */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prepare for Session 6: Build your dashboard</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-100)] dark:bg-[var(--card)] p-5 flex flex-col gap-3">
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Complete your AI employee by end of this week:</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Come to Session 6 with this ready:</p>
               <ol className="flex flex-col gap-2">
                 {[
-                  "Paste your system prompt into Cowork and save your employee",
-                  "Generate 3 test scenarios using the prompt above (in Claude.ai Thinking Partner)",
-                  "Run all 3 scenarios in Cowork and record what happened",
-                  "Use the \"Debrief and iterate\" prompt to get a revised system prompt",
-                  "Update your employee&apos;s brief with the improved version",
-                  "Run the scenarios one more time to confirm the issues are fixed",
+                  "Claude Code installed and confirmed working on your machine",
+                  "A clear description of the dashboard you want to build (write it out in plain language — not code)",
+                  "Your 5 key business metrics you want to see in one place",
+                  "A sketch of the layout — even on paper, even rough",
+                  "One question about what you&apos;re building (we&apos;ll answer them live)",
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--charcoal-900)] dark:text-foreground">
                     <span className="size-5 shrink-0 rounded-full border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[10px] font-semibold text-[var(--taupe-400)] mt-0.5">{i + 1}</span>
@@ -271,19 +304,11 @@ export default function Session6Page() {
             </div>
           </section>
 
-          {/* Deliverable */}
-          <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)] mb-2">Week 2 Deliverable</p>
-            <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">
-              1 named AI employee in Cowork, briefed with a tested system prompt and confirmed to handle at least 3 real scenarios from your business.
-            </p>
-          </div>
-
           {/* Next session card */}
           <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Claude Code — your first build</p>
-              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 3 · Session 5 — Sat, Jun 20</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Build your business dashboard</p>
+              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 3 · Session 6 — Sun, Jun 21</p>
             </div>
             <Link
               href={NEXT}
@@ -317,7 +342,7 @@ export default function Session6Page() {
               {bringList.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm text-[var(--charcoal-900)] dark:text-foreground">
                   <span className="size-1.5 rounded-full bg-[var(--clay-500)] mt-1.5 shrink-0" />
-                  <span dangerouslySetInnerHTML={{ __html: item }} />
+                  {item}
                 </li>
               ))}
             </ul>

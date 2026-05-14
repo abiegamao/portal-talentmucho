@@ -63,7 +63,7 @@ export async function register(
 
   if (error) return { error: error.message };
 
-  redirect("/participant");
+  redirect("/onboarding");
 }
 
 export async function forgotPassword(

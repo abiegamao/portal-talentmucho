@@ -13,39 +13,38 @@ const WEEKS = [
     color: "#C4A882",
     sessions: [
       { n: 1, path: `${BASE}/session-1`, title: "Kickoff & orientation" },
-      { n: 2, path: `${BASE}/session-2`, title: "Build your Bootcamp Map" },
     ],
   },
   {
     label: "Week 1 · Knowing Claude",
     color: "#C4A882",
     sessions: [
-      { n: 3, path: `${BASE}/session-3`, title: "Interface & first conversation" },
-      { n: 4, path: `${BASE}/session-4`, title: "Custom instructions" },
+      { n: 2, path: `${BASE}/session-2`, title: "Interface & first conversation" },
+      { n: 3, path: `${BASE}/session-3`, title: "Custom instructions" },
     ],
   },
   {
     label: "Week 2 · Delegating to Claude",
     color: "#7D6B5A",
     sessions: [
-      { n: 5, path: `${BASE}/session-5`, title: "AI employees — intro" },
-      { n: 6, path: `${BASE}/session-6`, title: "Build your AI employee" },
+      { n: 4, path: `${BASE}/session-4`, title: "AI employees — intro" },
+      { n: 5, path: `${BASE}/session-5`, title: "Build your AI employee" },
     ],
   },
   {
     label: "Week 3 · Building with Claude",
     color: "#5A7A6B",
     sessions: [
-      { n: 7, path: `${BASE}/session-7`, title: "Claude Code — first build" },
-      { n: 8, path: `${BASE}/session-8`, title: "Build your dashboard" },
+      { n: 6, path: `${BASE}/session-6`, title: "Claude Code — first build" },
+      { n: 7, path: `${BASE}/session-7`, title: "Build your dashboard" },
     ],
   },
   {
     label: "Week 4 · Living with Claude",
     color: "#6B5A7A",
     sessions: [
-      { n: 9, path: `${BASE}/session-9`, title: "Full Claude stack" },
-      { n: 10, path: `${BASE}/session-10`, title: "Graduation & showcase" },
+      { n: 8, path: `${BASE}/session-8`, title: "Full Claude stack" },
+      { n: 9, path: `${BASE}/session-9`, title: "Graduation & showcase" },
     ],
   },
 ];
@@ -149,7 +148,7 @@ export function SessionNavSidebar({ isOpen, onClose }: Props) {
 
         {/* Footer */}
         <div className="shrink-0 px-4 py-3 border-t border-[var(--beige-200)] dark:border-white/5 flex items-center justify-between">
-          <p className="text-[11px] text-[var(--taupe-400)] font-light">June 2026 · 10 sessions</p>
+          <p className="text-[11px] text-[var(--taupe-400)] font-light">June 2026 · 9 sessions</p>
           <ThemeTogglerButton
             variant="ghost"
             size="sm"

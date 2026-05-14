@@ -5,19 +5,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CodeTabs } from "@/components/animate-ui/components/animate/code-tabs";
 
 const SESSION = {
-  tag: "W3 · S6",
-  color: "#5A7A6B",
-  weekLabel: "Week 3 · Building with Claude",
-  title: "Build your business dashboard",
-  date: "Sun, Jun 21",
+  tag: "W4 · S7",
+  color: "#6B5A7A",
+  weekLabel: "Week 4 · Living with Claude",
+  title: "Your full Claude stack working together",
+  date: "Sat, Jun 27",
   time: "10 AM–1 PM EST",
   videoUrl: null as string | null,
   description:
-    "The big build session. You'll use Claude Code to create a custom dashboard for your business — pulling in your data, designing what matters to you, and iterating live. No coding experience required.",
+    "All three outputs from the bootcamp — your Claude.ai Projects, your AI employee, and your Claude Code dashboard — run together in a real workflow. We'll map exactly where Claude fits in your workday and write your daily routine.",
   resources: [
-    { label: "Dashboard planning worksheet", href: "#" },
-    { label: "Claude Code examples", href: "#" },
-    { label: "Week 3 deliverable checklist", href: "#" },
+    { label: "Daily routine template", href: "#" },
+    { label: "Stack integration guide", href: "#" },
+    { label: "Session slides", href: "#" },
   ],
 };
 
@@ -26,112 +26,122 @@ const PREV     = "/participant/courses/cohort-1/session-7";
 const NEXT     = "/participant/courses/cohort-1/session-9";
 
 const bringList = [
-  "Claude Code installed from Session 5",
-  "5 key metrics you track in your business (write them down)",
-  "Your current tracking method — spreadsheet, app, or notebook",
-  "A rough sketch or description of what your dashboard should look like",
+  "Your 3 Claude.ai Projects (configured and active)",
+  "Your Cowork AI employee (named, briefed, and tested)",
+  "Your Claude Code business dashboard (running in browser)",
 ];
 
 const objectives = [
-  "Plan your dashboard before building it (5 questions first)",
-  "Build a working first version with Claude Code",
-  "Iterate based on what you see in the browser",
-  "Know how to describe what&apos;s wrong and get it fixed precisely",
+  "Map your full 3-layer Claude stack",
+  "See how all three layers connect in a real daily workflow",
+  "Write your daily Claude routine (3 specific moments)",
+  "Prepare your 2-minute showcase for Session 8",
 ];
 
-const planningQuestions = [
-  { q: "What decision does this help you make?", hint: "\"I want to know at a glance if I need to push on revenue this week\" is a decision. \"I want to see my numbers\" isn&apos;t." },
-  { q: "What are the 5 numbers you&apos;d look at first every morning?", hint: "These become your primary metric cards. If you can&apos;t name 5, start with 3." },
-  { q: "Who else needs to see this?", hint: "Just you = simpler. Your team = needs labels and context. Clients = needs to look polished." },
-  { q: "How will you update the data?", hint: "Manually (you type in numbers each week) or automatically (connected to a source). Start manually — it&apos;s simpler and you can automate later." },
-  { q: "What does Version 1 look like?", hint: "Define the smallest version that&apos;s still useful. Resist the urge to build everything at once." },
+const stackLayers = [
+  {
+    layer: "Layer 1",
+    name: "Claude.ai Projects",
+    role: "Your thinking partner",
+    when: "When you need to think, write, or decide",
+    examples: ["Draft client proposals and emails", "Think through a business problem out loud", "Research, analyze, summarize", "Plan your week, strategy sessions"],
+    color: "#C4A882",
+  },
+  {
+    layer: "Layer 2",
+    name: "Cowork AI employee",
+    role: "Your delegate",
+    when: "When work can run without you in every message",
+    examples: ["Handle routine client inquiries", "Process intake and route requests", "Send welcome sequences", "Draft follow-ups in your voice"],
+    color: "#7D6B5A",
+  },
+  {
+    layer: "Layer 3",
+    name: "Claude Code dashboard",
+    role: "Your visibility tool",
+    when: "When you need to see what&apos;s happening at a glance",
+    examples: ["Check key metrics each morning", "Track client project status", "Review weekly numbers", "Monitor what your AI employee handled"],
+    color: "#5A7A6B",
+  },
 ];
 
-const iterationRules = [
-  { wrong: "It doesn&apos;t look right", right: "The revenue card font is too small — make it 32px and bold" },
-  { wrong: "I want it simpler", right: "Remove the chart entirely — just show the number" },
-  { wrong: "The colors are off", right: "Change the sidebar background from dark gray to navy (#1a2332)" },
-  { wrong: "Something&apos;s broken", right: "The \"Active Clients\" card shows 0 instead of 12 — the sample data is in clients.json but the component isn&apos;t reading it" },
+const workflowExample = [
+  { time: "8:00 AM", layer: "Layer 3", action: "Open your Claude Code dashboard → see 3 new client inquiries flagged overnight" },
+  { time: "8:15 AM", layer: "Layer 2", action: "Your Cowork AI employee already responded to 2 of them with qualification questions" },
+  { time: "8:30 AM", layer: "Layer 1", action: "Open Claude.ai → paste the third (complex) inquiry → get a draft response → review and send" },
+  { time: "11:00 AM", layer: "Layer 1", action: "Use Claude.ai to prep for an afternoon client call — pull talking points from your Project" },
+  { time: "4:00 PM", layer: "Layer 1", action: "Ask Claude.ai to draft your weekly client update using metrics from your dashboard" },
+  { time: "4:30 PM", layer: "Layer 2", action: "Your AI employee sends a catch-up message to clients who haven&apos;t checked in this week" },
 ];
 
 const PROMPTS: Record<string, string> = {
-  "Dashboard planning conversation": `I want to build a business dashboard. Help me plan it before we build.
+  "Map my Claude stack": `I&apos;ve completed the AI Business Bootcamp. Here&apos;s what I built:
 
-My business: [describe what you do in 2–3 sentences]
-Who uses this dashboard: [just me / my team / clients]
+My Claude.ai Projects:
+1. [Project name] — I use this for: [purpose]
+2. [Project name] — I use this for: [purpose]
+3. [Project name] — I use this for: [purpose]
 
-The main reason I want this:
-[What decision or habit does this dashboard support? Be specific.]
+My Cowork AI employee:
+- Name: [name]
+- Role: [job title]
+- They handle: [list their main tasks]
+- They escalate: [what comes to me]
 
-Metrics I want to track:
-1. [metric name] — currently tracked in: [spreadsheet / app / my head]
-2. [metric name] — currently tracked in: [where]
-3. [metric name] — currently tracked in: [where]
-4. [metric name] — currently tracked in: [where]
-5. [metric name] — currently tracked in: [where]
+My Claude Code dashboard:
+- Shows: [what metrics / data]
+- I check it: [when — morning / weekly / before client calls]
 
-How I&apos;ll update the data: [manually each week / automatically from ___]
+Now help me:
+1. Identify any gaps — workflows I should have covered but didn&apos;t
+2. Spot any overlaps — places where two layers are doing the same thing
+3. Write a summary of my complete Claude stack in plain language I could explain to a colleague`,
 
-Based on this, ask me 3 clarifying questions that will help us build the right thing — not the most impressive thing, the most useful thing.`,
+  "Write my daily routine": `Based on my Claude stack above, help me write a specific daily Claude routine.
 
-  "Build prompt (use in Claude Code)": `Build me a business dashboard using React.
+My typical workday looks like:
+[Describe your day — when you start, what types of work you do in the morning vs. afternoon, how you interact with clients, what tasks are repetitive]
 
-PURPOSE: [one sentence — what this dashboard helps me do]
+Write my routine in this format:
 
-METRICS TO DISPLAY (top section — large, prominent numbers):
-- [Metric 1 name]: sample value [X]
-- [Metric 2 name]: sample value [X]
-- [Metric 3 name]: sample value [X]
+MORNING (time ___):
+→ I open [which tool] to [do what — be specific]
+→ This takes approximately [__ minutes]
 
-SECONDARY INFO (below the main metrics):
-- [List or table showing: active projects / recent clients / upcoming tasks — choose one]
-  - Sample data: [describe what a few rows would look like]
+MIDDAY (time ___):
+→ [AI employee] handles [what] without me
+→ I check in on [what] if needed
 
-LAYOUT:
-- Top: [2–4] metric cards in a row
-- Middle: [table / list / two-column layout]
-- Colors: [your brand color as hex, or "minimal white and gray"]
+AFTERNOON (time ___):
+→ I use [which Claude layer] for [what]
 
-NOTES:
-- Store sample data in a separate data file so I can easily update it
-- Make it responsive — looks good on laptop and tablet
-- Run with: npm run dev
-- Keep it Version 1 simple — no charts unless I specifically ask`,
+END OF DAY (time ___):
+→ I check [dashboard] to see [what]
+→ I spend [___ minutes] using Claude to [close the day]
 
-  "Iterate — change specific things": `The dashboard looks good. I want to make these specific changes:
+WEEKLY (day ___):
+→ Deeper use: [what]
 
-CHANGE 1:
-- What: [specific element — e.g. "The Revenue card"]
-- Current state: [what it looks like now — e.g. "Shows the number in small gray text"]
-- What I want: [e.g. "Make the number large (40px), dark, and bold. Add a small upward arrow next to it."]
+Make each step concrete and specific to my actual business — not generic habits.`,
 
-CHANGE 2:
-- What: [specific element]
-- Current state: [what it looks like now]
-- What I want: [what it should be]
+  "Prepare my showcase": `I need to present my work from the bootcamp in 2 minutes. Here&apos;s what I built:
 
-CHANGE 3:
-- What: [specific element]
-- Current state: [current state]
-- What I want: [desired state]
+[Paste your stack map from the first prompt above]
 
-Make only these changes. Don&apos;t redesign, don&apos;t improve anything else.`,
+One concrete result or change in my business since starting: [describe something real — even small — that&apos;s different now]
 
-  "When something looks broken": `Something isn the dashboard isn&apos;t working correctly. Here&apos;s the exact issue:
+Something I&apos;m going to build or improve next: [what&apos;s next for your Claude practice]
 
-WHAT I SEE:
-[Describe what&apos;s appearing on screen — e.g. "The Active Clients card shows '0' instead of a real number"]
+Write me a 2-minute verbal presentation using this structure:
+- 30 sec: Who I am and what my business does
+- 45 sec: What I built (make it tangible — not "I built things" but specific)
+- 30 sec: One result or change this created
+- 15 sec: What I&apos;m building next
 
-WHAT SHOULD HAPPEN:
-[What the correct output should be — e.g. "It should show '12' based on the clients array in data.js"]
-
-WHERE THE DATA IS:
-[Tell Claude Code where to look — e.g. "The data is in /src/data/clients.json, key name is 'activeCount'"]
-
-Fix only this issue. If you&apos;re going to change more than 5 lines, check with me first.`,
+Keep it conversational. No slides needed — this is spoken.`,
 };
 
-export default function Session8Page() {
+export default function Session9Page() {
   return (
     <div className="flex-1 bg-[var(--beige-50)] dark:bg-background flex flex-col overflow-hidden min-h-0">
 
@@ -142,7 +152,7 @@ export default function Session8Page() {
           className="inline-flex items-center gap-1.5 text-sm text-[var(--taupe-400)] hover:text-[var(--charcoal-900)] dark:hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
-          W3 · S5
+          W3 · S6
         </Link>
 
         <div className="flex items-center gap-2">
@@ -161,7 +171,7 @@ export default function Session8Page() {
           href={NEXT}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground hover:opacity-70 transition-opacity"
         >
-          W4 · S7
+          W4 · S8
           <ArrowRight className="size-3.5" />
         </Link>
       </header>
@@ -191,66 +201,81 @@ export default function Session8Page() {
                     <span className="size-6 shrink-0 rounded-full bg-[var(--beige-100)] dark:bg-white/5 border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[11px] font-semibold text-[var(--taupe-400)]">
                       {i + 1}
                     </span>
-                    <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed pt-0.5" dangerouslySetInnerHTML={{ __html: obj }} />
+                    <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed pt-0.5">{obj}</p>
                   </li>
                 ))}
               </ol>
             </div>
           </section>
 
-          {/* Plan before you build */}
+          {/* Three-layer stack */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Plan before you build — 5 questions to answer first</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-4">
-              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                The most common reason a Claude Code build comes out wrong: the builder skipped planning. Use the planning prompt below to answer these questions before you type a single build command.
-              </p>
-              <div className="flex flex-col gap-3">
-                {planningQuestions.map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 pb-3 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0 last:pb-0">
-                    <span className="size-6 shrink-0 rounded-full bg-[var(--beige-100)] dark:bg-white/5 border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[11px] font-semibold text-[var(--taupe-400)] mt-0.5">
-                      {i + 1}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.q}</p>
-                      <p className="text-xs text-[var(--taupe-400)] font-light leading-relaxed" dangerouslySetInnerHTML={{ __html: item.hint }} />
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your 3-layer Claude stack</p>
+            <div className="flex flex-col gap-3">
+              {stackLayers.map((layer) => (
+                <div key={layer.layer} className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] overflow-hidden">
+                  <div className="px-5 py-3 flex items-center gap-3" style={{ background: `${layer.color}18`, borderBottom: `1px solid ${layer.color}22` }}>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: layer.color }}>{layer.layer}</span>
+                    <span className="font-medium text-sm text-[var(--charcoal-900)] dark:text-foreground">{layer.name}</span>
+                    <span className="text-xs text-[var(--taupe-400)] font-light ml-auto">{layer.role}</span>
+                  </div>
+                  <div className="px-5 py-4 flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1">
+                      <p className="text-[10px] font-semibold text-[var(--taupe-400)] uppercase tracking-[0.1em] mb-1.5">When to use it</p>
+                      <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light" dangerouslySetInnerHTML={{ __html: layer.when }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[10px] font-semibold text-[var(--taupe-400)] uppercase tracking-[0.1em] mb-1.5">Examples</p>
+                      <ul className="flex flex-col gap-1">
+                        {layer.examples.map((ex) => (
+                          <li key={ex} className="flex items-start gap-1.5 text-xs text-[var(--charcoal-900)] dark:text-foreground font-light">
+                            <span className="shrink-0 mt-0.5" style={{ color: layer.color }}>·</span>
+                            <span dangerouslySetInnerHTML={{ __html: ex }} />
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* V1 mindset */}
+          {/* Workflow example */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">The Version 1 mindset</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
-              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                The goal of this session is <strong className="font-medium">a working first version you can show someone</strong> — not a perfect version that doesn&apos;t exist yet. A real dashboard with 3 metrics is worth more than a perfect dashboard that&apos;s still being designed.
-              </p>
-              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Build V1, open it in the browser, show it to someone today, iterate. The iteration is where the learning happens.
-              </p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">How they connect — a real workday example</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] overflow-hidden">
+              {workflowExample.map((item, i) => (
+                <div
+                  key={i}
+                  className={`grid grid-cols-[60px_80px_1fr] gap-3 px-5 py-3 items-start text-sm ${i < workflowExample.length - 1 ? "border-b border-[var(--beige-200)] dark:border-white/5" : ""} ${i % 2 === 0 ? "bg-[var(--beige-50)] dark:bg-transparent" : "bg-white dark:bg-white/[0.02]"}`}
+                >
+                  <span className="text-[var(--taupe-400)] font-light text-xs pt-0.5">{item.time}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--taupe-400)] pt-0.5">{item.layer}</span>
+                  <span className="text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed" dangerouslySetInnerHTML={{ __html: item.action }} />
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* Iteration rules */}
+          {/* Daily routine concept */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">How to describe what&apos;s wrong — precision matters</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Designing your daily routine</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Claude Code makes exactly the change you describe. Vague feedback creates random changes. Specific feedback creates precise improvements.
+                A routine is a Claude stack that runs without you having to decide when to use it. The participants who get the most out of Claude after the bootcamp aren&apos;t the ones who use it the most — they&apos;re the ones who have specific triggers that open Claude automatically.
               </p>
-              <div className="flex flex-col gap-3">
-                {iterationRules.map((rule, i) => (
-                  <div key={i} className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <div className="rounded-lg border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] px-3 py-2">
-                      <p className="text-[10px] font-semibold text-[var(--taupe-400)] uppercase tracking-[0.1em] mb-0.5">Don&apos;t say</p>
-                      <p className="text-sm text-[var(--taupe-400)] font-light" dangerouslySetInnerHTML={{ __html: `"${rule.wrong}"` }} />
-                    </div>
-                    <div className="rounded-lg border border-[var(--clay-500)]/30 bg-[var(--clay-500)]/5 px-3 py-2">
-                      <p className="text-[10px] font-semibold text-[var(--clay-500)] uppercase tracking-[0.1em] mb-0.5">Say</p>
-                      <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light" dangerouslySetInnerHTML={{ __html: `"${rule.right}"` }} />
+              <div className="flex flex-col gap-2">
+                {[
+                  { trigger: "Morning open", question: "Which tool do you open first, every day? What are you looking for?" },
+                  { trigger: "Midday delegate", question: "What does your AI employee handle without you checking in?" },
+                  { trigger: "End of day check", question: "What does your dashboard tell you at 5 PM?" },
+                  { trigger: "Weekly depth", question: "When do you sit with Claude for longer thinking — planning, strategy, reflection?" },
+                ].map((item) => (
+                  <div key={item.trigger} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.trigger}</p>
+                      <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">{item.question}</p>
                     </div>
                   </div>
                 ))}
@@ -260,26 +285,47 @@ export default function Session8Page() {
 
           {/* Prompts */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — copy and use these</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — use these in your Thinking Partner Project</p>
             <p className="text-sm text-[var(--taupe-400)] -mt-1">
-              Start with <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Dashboard planning conversation</strong> in Claude.ai. Then use the <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Build prompt</strong> directly inside Claude Code. Use the iteration prompts when you see the first version and want to refine it.
+              Run these in order. The stack map feeds into the daily routine. Both feed into your showcase.
             </p>
             <CodeTabs codes={PROMPTS} lang="markdown" />
           </section>
 
-          {/* Deliverable */}
+          {/* Showcase prep */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Showcase prep — what to have ready for Session 8</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-100)] dark:bg-[var(--card)] p-5 flex flex-col gap-3">
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Your 2-minute showcase covers 4 things:</p>
+              <ol className="flex flex-col gap-2">
+                {[
+                  "30 sec: Who you are and what your business does (assume the group knows you — be brief)",
+                  "45 sec: What you built — show it if you can. Describe it specifically if not.",
+                  "30 sec: One result or change in your business — even small counts",
+                  "15 sec: What you&apos;re building or improving next",
+                ].map((step, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--charcoal-900)] dark:text-foreground">
+                    <span className="size-5 shrink-0 rounded-full border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[10px] font-semibold text-[var(--taupe-400)] mt-0.5">{i + 1}</span>
+                    <span dangerouslySetInnerHTML={{ __html: step }} />
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </section>
+
+          {/* Week 4 Deliverable */}
           <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)] mb-2">Week 3 Deliverable</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)] mb-2">Week 4 Deliverable</p>
             <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">
-              1 custom business dashboard built with Claude Code — running in your browser, showing at least 3 of your real metrics with sample data you can update.
+              A written daily Claude routine: 3 specific moments in your workday where Claude is open and ready — with the exact tool and the exact task described for each.
             </p>
           </div>
 
           {/* Next session card */}
           <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Your full Claude stack working together</p>
-              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 4 · Session 7 — Sat, Jun 27</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Showcases, Q&amp;A, and graduation</p>
+              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 4 · Session 8 — Sun, Jun 28</p>
             </div>
             <Link
               href={NEXT}

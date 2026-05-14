@@ -55,7 +55,7 @@ export default function Session1Page() {
           href={NEXT}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground hover:opacity-70 transition-opacity"
         >
-          Start intake
+          W1 · S1
           <ArrowRight className="size-3.5" />
         </Link>
       </header>
@@ -93,10 +93,10 @@ export default function Session1Page() {
           <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex items-center justify-between gap-4 mt-auto">
             <div>
               <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">
-                Up next: Build your Bootcamp Map
+                Up next: The interface, Projects, your first conversation
               </p>
               <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">
-                10 questions · shapes every session to your business
+                Week 1 · Session 1 — Sat, Jun 6
               </p>
             </div>
             <Link

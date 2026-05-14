@@ -5,143 +5,114 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CodeTabs } from "@/components/animate-ui/components/animate/code-tabs";
 
 const SESSION = {
-  tag: "W4 · S7",
+  tag: "W4 · S8",
   color: "#6B5A7A",
   weekLabel: "Week 4 · Living with Claude",
-  title: "Your full Claude stack working together",
-  date: "Sat, Jun 27",
+  title: "Showcases, Q&A, and graduation",
+  date: "Sun, Jun 28",
   time: "10 AM–1 PM EST",
   videoUrl: null as string | null,
   description:
-    "All three outputs from the bootcamp — your Claude.ai Projects, your AI employee, and your Claude Code dashboard — run together in a real workflow. We'll map exactly where Claude fits in your workday and write your daily routine.",
+    "Every participant gets 2 minutes to share what they built. Then we close with open Q&A, a look at what comes next, and your graduation from Cohort 1.",
   resources: [
-    { label: "Daily routine template", href: "#" },
-    { label: "Stack integration guide", href: "#" },
-    { label: "Session slides", href: "#" },
+    { label: "Showcase template", href: "#" },
+    { label: "30-day plan worksheet", href: "#" },
+    { label: "Cohort 1 graduation resources", href: "#" },
   ],
 };
 
 const OVERVIEW = "/participant/courses/cohort-1";
 const PREV     = "/participant/courses/cohort-1/session-8";
-const NEXT     = "/participant/courses/cohort-1/session-10";
 
 const bringList = [
-  "Your 3 Claude.ai Projects (configured and active)",
-  "Your Cowork AI employee (named, briefed, and tested)",
-  "Your Claude Code business dashboard (running in browser)",
+  "All 3 deliverables ready to show (Projects, AI employee, dashboard)",
+  "One specific win or change from the past 4 weeks",
+  "One question you still have about AI for your business",
 ];
 
 const objectives = [
-  "Map your full 3-layer Claude stack",
-  "See how all three layers connect in a real daily workflow",
-  "Write your daily Claude routine (3 specific moments)",
-  "Prepare your 2-minute showcase for Session 8",
+  "Present your 3 deliverables in 2 minutes",
+  "Collect feedback and answer your final questions",
+  "Write your 30-day plan",
+  "Graduate from Cohort 1",
 ];
 
-const stackLayers = [
-  {
-    layer: "Layer 1",
-    name: "Claude.ai Projects",
-    role: "Your thinking partner",
-    when: "When you need to think, write, or decide",
-    examples: ["Draft client proposals and emails", "Think through a business problem out loud", "Research, analyze, summarize", "Plan your week, strategy sessions"],
-    color: "#C4A882",
-  },
-  {
-    layer: "Layer 2",
-    name: "Cowork AI employee",
-    role: "Your delegate",
-    when: "When work can run without you in every message",
-    examples: ["Handle routine client inquiries", "Process intake and route requests", "Send welcome sequences", "Draft follow-ups in your voice"],
-    color: "#7D6B5A",
-  },
-  {
-    layer: "Layer 3",
-    name: "Claude Code dashboard",
-    role: "Your visibility tool",
-    when: "When you need to see what&apos;s happening at a glance",
-    examples: ["Check key metrics each morning", "Track client project status", "Review weekly numbers", "Monitor what your AI employee handled"],
-    color: "#5A7A6B",
-  },
+const deliverableChecklist = [
+  { label: "3 Claude.ai Projects", desc: "Each configured with custom instructions and at least one uploaded file" },
+  { label: "1 Cowork AI employee", desc: "Named, briefed with a system prompt, tested against 3 real scenarios" },
+  { label: "1 Claude Code dashboard", desc: "Running in your browser with at least 3 metrics and sample data" },
+  { label: "Written daily Claude routine", desc: "3 specific moments in your workday where Claude is open and ready" },
 ];
 
-const workflowExample = [
-  { time: "8:00 AM", layer: "Layer 3", action: "Open your Claude Code dashboard → see 3 new client inquiries flagged overnight" },
-  { time: "8:15 AM", layer: "Layer 2", action: "Your Cowork AI employee already responded to 2 of them with qualification questions" },
-  { time: "8:30 AM", layer: "Layer 1", action: "Open Claude.ai → paste the third (complex) inquiry → get a draft response → review and send" },
-  { time: "11:00 AM", layer: "Layer 1", action: "Use Claude.ai to prep for an afternoon client call — pull talking points from your Project" },
-  { time: "4:00 PM", layer: "Layer 1", action: "Ask Claude.ai to draft your weekly client update using metrics from your dashboard" },
-  { time: "4:30 PM", layer: "Layer 2", action: "Your AI employee sends a catch-up message to clients who haven&apos;t checked in this week" },
+const whatComesNext = [
+  { action: "Keep your AI employee running", desc: "Iterate on the system prompt as you learn what works. Most system prompts improve 3–4 times before they feel right." },
+  { action: "Add a second Claude.ai Project", desc: "When you hit a new problem area — client communication, team management, product development — build a Project around it." },
+  { action: "Build a second Claude Code tool", desc: "When you see a manual process that could be visual or interactive, that&apos;s your next build." },
+  { action: "Teach someone else", desc: "Showing another person how to set up Claude.ai is the fastest way to lock in what you&apos;ve learned. Teach one person before next week." },
 ];
 
 const PROMPTS: Record<string, string> = {
-  "Map my Claude stack": `I&apos;ve completed the AI Business Bootcamp. Here&apos;s what I built:
+  "Your 30-day plan": `I just graduated from the AI Business Bootcamp. Here&apos;s what I built:
 
-My Claude.ai Projects:
-1. [Project name] — I use this for: [purpose]
-2. [Project name] — I use this for: [purpose]
-3. [Project name] — I use this for: [purpose]
+Claude.ai Projects:
+1. [Project name] — use: [purpose]
+2. [Project name] — use: [purpose]
+3. [Project name] — use: [purpose]
 
-My Cowork AI employee:
-- Name: [name]
-- Role: [job title]
-- They handle: [list their main tasks]
-- They escalate: [what comes to me]
+Cowork AI employee:
+- Name: [name], Role: [role]
+- Handles: [main tasks]
 
-My Claude Code dashboard:
-- Shows: [what metrics / data]
-- I check it: [when — morning / weekly / before client calls]
+Claude Code dashboard:
+- Shows: [what it displays]
+- I check it: [when]
 
-Now help me:
-1. Identify any gaps — workflows I should have covered but didn&apos;t
-2. Spot any overlaps — places where two layers are doing the same thing
-3. Write a summary of my complete Claude stack in plain language I could explain to a colleague`,
+My daily routine:
+[Paste your written routine from Session 7]
 
-  "Write my daily routine": `Based on my Claude stack above, help me write a specific daily Claude routine.
+One thing that already changed in my business: [describe — even small]
 
-My typical workday looks like:
-[Describe your day — when you start, what types of work you do in the morning vs. afternoon, how you interact with clients, what tasks are repetitive]
+Write me a specific 30-day plan. Include:
+1. Three things to build or improve in the next 30 days (be specific — not "improve my AI employee" but "add a rule to handle client refund requests without escalating")
+2. One daily Claude habit to maintain (what, when, and what it replaces)
+3. One team member or client to involve — and how to introduce them to what you&apos;ve built
+4. One metric to track that will tell you Claude is actually working for your business`,
 
-Write my routine in this format:
+  "Teach someone else": `I want to introduce a [colleague / team member / business partner] to Claude.ai. They have no experience with AI tools yet.
 
-MORNING (time ___):
-→ I open [which tool] to [do what — be specific]
-→ This takes approximately [__ minutes]
+About them: [describe their role, what they do day-to-day, what they might be skeptical about]
 
-MIDDAY (time ___):
-→ [AI employee] handles [what] without me
-→ I check in on [what] if needed
+I want to show them:
+1. How I use my [Project name] Project for [specific use case]
+2. How my AI employee handles [specific task]
+3. My dashboard and what it tells me
 
-AFTERNOON (time ___):
-→ I use [which Claude layer] for [what]
+Write me:
+1. A 5-minute intro script I can use to walk them through it — start with the "what&apos;s in it for them" before showing the tools
+2. Three things I should let them try hands-on (so they feel it, not just watch)
+3. One follow-up question I should ask them 3 days later`,
 
-END OF DAY (time ___):
-→ I check [dashboard] to see [what]
-→ I spend [___ minutes] using Claude to [close the day]
+  "Review your practice in 30 days": `[Use this prompt 30 days from now — save it somewhere you&apos;ll find it]
 
-WEEKLY (day ___):
-→ Deeper use: [what]
+It&apos;s been 30 days since I completed the AI Business Bootcamp. Here&apos;s my honest assessment:
 
-Make each step concrete and specific to my actual business — not generic habits.`,
+What I&apos;ve actually been using:
+- Claude.ai Projects: [how often, for what]
+- My AI employee: [how often, what it&apos;s handling well, what still breaks]
+- My dashboard: [how often, whether it&apos;s become a habit]
+- My daily routine: [what stuck, what I dropped]
 
-  "Prepare my showcase": `I need to present my work from the bootcamp in 2 minutes. Here&apos;s what I built:
+What I built or improved in the 30 days: [describe]
 
-[Paste your stack map from the first prompt above]
+What&apos;s still not working: [be honest]
 
-One concrete result or change in my business since starting: [describe something real — even small — that&apos;s different now]
-
-Something I&apos;m going to build or improve next: [what&apos;s next for your Claude practice]
-
-Write me a 2-minute verbal presentation using this structure:
-- 30 sec: Who I am and what my business does
-- 45 sec: What I built (make it tangible — not "I built things" but specific)
-- 30 sec: One result or change this created
-- 15 sec: What I&apos;m building next
-
-Keep it conversational. No slides needed — this is spoken.`,
+Based on this, tell me:
+1. What to prioritize in the next 30 days
+2. What to stop doing (even if I set it up — if it&apos;s not working, cut it)
+3. One new thing to add to my Claude stack`,
 };
 
-export default function Session9Page() {
+export default function Session10Page() {
   return (
     <div className="flex-1 bg-[var(--beige-50)] dark:bg-background flex flex-col overflow-hidden min-h-0">
 
@@ -152,7 +123,7 @@ export default function Session9Page() {
           className="inline-flex items-center gap-1.5 text-sm text-[var(--taupe-400)] hover:text-[var(--charcoal-900)] dark:hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
-          W3 · S6
+          W4 · S7
         </Link>
 
         <div className="flex items-center gap-2">
@@ -168,10 +139,10 @@ export default function Session9Page() {
         </div>
 
         <Link
-          href={NEXT}
+          href={OVERVIEW}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground hover:opacity-70 transition-opacity"
         >
-          W4 · S8
+          Back to course
           <ArrowRight className="size-3.5" />
         </Link>
       </header>
@@ -208,74 +179,61 @@ export default function Session9Page() {
             </div>
           </section>
 
-          {/* Three-layer stack */}
+          {/* Final deliverables checklist */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your 3-layer Claude stack</p>
-            <div className="flex flex-col gap-3">
-              {stackLayers.map((layer) => (
-                <div key={layer.layer} className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] overflow-hidden">
-                  <div className="px-5 py-3 flex items-center gap-3" style={{ background: `${layer.color}18`, borderBottom: `1px solid ${layer.color}22` }}>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: layer.color }}>{layer.layer}</span>
-                    <span className="font-medium text-sm text-[var(--charcoal-900)] dark:text-foreground">{layer.name}</span>
-                    <span className="text-xs text-[var(--taupe-400)] font-light ml-auto">{layer.role}</span>
-                  </div>
-                  <div className="px-5 py-4 flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1">
-                      <p className="text-[10px] font-semibold text-[var(--taupe-400)] uppercase tracking-[0.1em] mb-1.5">When to use it</p>
-                      <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light" dangerouslySetInnerHTML={{ __html: layer.when }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-[10px] font-semibold text-[var(--taupe-400)] uppercase tracking-[0.1em] mb-1.5">Examples</p>
-                      <ul className="flex flex-col gap-1">
-                        {layer.examples.map((ex) => (
-                          <li key={ex} className="flex items-start gap-1.5 text-xs text-[var(--charcoal-900)] dark:text-foreground font-light">
-                            <span className="shrink-0 mt-0.5" style={{ color: layer.color }}>·</span>
-                            <span dangerouslySetInnerHTML={{ __html: ex }} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Workflow example */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">How they connect — a real workday example</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] overflow-hidden">
-              {workflowExample.map((item, i) => (
-                <div
-                  key={i}
-                  className={`grid grid-cols-[60px_80px_1fr] gap-3 px-5 py-3 items-start text-sm ${i < workflowExample.length - 1 ? "border-b border-[var(--beige-200)] dark:border-white/5" : ""} ${i % 2 === 0 ? "bg-[var(--beige-50)] dark:bg-transparent" : "bg-white dark:bg-white/[0.02]"}`}
-                >
-                  <span className="text-[var(--taupe-400)] font-light text-xs pt-0.5">{item.time}</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--taupe-400)] pt-0.5">{item.layer}</span>
-                  <span className="text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed" dangerouslySetInnerHTML={{ __html: item.action }} />
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Daily routine concept */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Designing your daily routine</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Final deliverables — confirm you have all four</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
+              {deliverableChecklist.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0 last:pb-0 first:pt-0">
+                  <div className="size-5 shrink-0 rounded border-2 border-[var(--beige-200)] dark:border-white/10 mt-0.5 flex items-center justify-center">
+                    <span className="text-[var(--clay-500)] text-xs font-bold">✓</span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.label}</p>
+                    <p className="text-xs text-[var(--taupe-400)] font-light">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Showcase format */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your 2-minute showcase format</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-4">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                A routine is a Claude stack that runs without you having to decide when to use it. The participants who get the most out of Claude after the bootcamp aren&apos;t the ones who use it the most — they&apos;re the ones who have specific triggers that open Claude automatically.
+                No slides required. This is a spoken presentation — show your actual work if you can share your screen. Keep it tight. The cohort learns as much from your specific details as from any session.
               </p>
               <div className="flex flex-col gap-2">
                 {[
-                  { trigger: "Morning open", question: "Which tool do you open first, every day? What are you looking for?" },
-                  { trigger: "Midday delegate", question: "What does your AI employee handle without you checking in?" },
-                  { trigger: "End of day check", question: "What does your dashboard tell you at 5 PM?" },
-                  { trigger: "Weekly depth", question: "When do you sit with Claude for longer thinking — planning, strategy, reflection?" },
-                ].map((item) => (
-                  <div key={item.trigger} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.trigger}</p>
-                      <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">{item.question}</p>
+                  { time: "30 sec", content: "Who you are and what your business does — brief, the cohort knows you" },
+                  { time: "45 sec", content: "What you built — be specific. \"I built a client intake AI employee named Alex who handles all first-response messages\" not \"I built an AI employee\"" },
+                  { time: "30 sec", content: "One result or change — what&apos;s different now? Even small counts: \"I saved 2 hours last week\" or \"I sent my first AI-drafted proposal\"" },
+                  { time: "15 sec", content: "What you&apos;re building or improving next — commit to one thing publicly" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="text-xs font-semibold text-[var(--taupe-400)] min-w-[48px] mt-0.5">{item.time}</span>
+                    <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed" dangerouslySetInnerHTML={{ __html: item.content }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* What comes next */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What comes next — graduation is the beginning</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
+              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
+                Graduation means you have a foundation — not that you&apos;re done. The businesses that get the most out of AI are the ones that keep iterating past the bootcamp. Here&apos;s what that looks like in practice:
+              </p>
+              <div className="flex flex-col gap-3">
+                {whatComesNext.map((item) => (
+                  <div key={item.action} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0">
+                    <div className="size-1.5 rounded-full bg-[var(--clay-500)] mt-2 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.action}</p>
+                      <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.desc }} />
                     </div>
                   </div>
                 ))}
@@ -285,55 +243,33 @@ export default function Session9Page() {
 
           {/* Prompts */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — use these in your Thinking Partner Project</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — use these today and in the weeks ahead</p>
             <p className="text-sm text-[var(--taupe-400)] -mt-1">
-              Run these in order. The stack map feeds into the daily routine. Both feed into your showcase.
+              Run <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Your 30-day plan</strong> in your Thinking Partner Project today. Save <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Review your practice in 30 days</strong> somewhere you&apos;ll find it — set a calendar reminder.
             </p>
             <CodeTabs codes={PROMPTS} lang="markdown" />
           </section>
 
-          {/* Showcase prep */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Showcase prep — what to have ready for Session 8</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-100)] dark:bg-[var(--card)] p-5 flex flex-col gap-3">
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Your 2-minute showcase covers 4 things:</p>
-              <ol className="flex flex-col gap-2">
-                {[
-                  "30 sec: Who you are and what your business does (assume the group knows you — be brief)",
-                  "45 sec: What you built — show it if you can. Describe it specifically if not.",
-                  "30 sec: One result or change in your business — even small counts",
-                  "15 sec: What you&apos;re building or improving next",
-                ].map((step, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--charcoal-900)] dark:text-foreground">
-                    <span className="size-5 shrink-0 rounded-full border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[10px] font-semibold text-[var(--taupe-400)] mt-0.5">{i + 1}</span>
-                    <span dangerouslySetInnerHTML={{ __html: step }} />
-                  </li>
-                ))}
-              </ol>
+          {/* Graduation card */}
+          <div className="rounded-2xl overflow-hidden border border-[var(--beige-200)] dark:border-white/5">
+            <div className="px-6 py-5 bg-[var(--charcoal-900)] dark:bg-white flex flex-col gap-2">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 dark:text-black/50">Cohort 1 · June 2026</p>
+              <p className="font-serif font-light text-white dark:text-[var(--charcoal-900)] text-lg">AI Business Bootcamp</p>
+              <p className="text-sm text-white/70 dark:text-black/60 font-light">4 weeks · 9 live sessions · 4 real deliverables running in your business</p>
             </div>
-          </section>
-
-          {/* Week 4 Deliverable */}
-          <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)] mb-2">Week 4 Deliverable</p>
-            <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">
-              A written daily Claude routine: 3 specific moments in your workday where Claude is open and ready — with the exact tool and the exact task described for each.
-            </p>
-          </div>
-
-          {/* Next session card */}
-          <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Showcases, Q&amp;A, and graduation</p>
-              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 4 · Session 8 — Sun, Jun 28</p>
+            <div className="px-6 py-5 bg-white dark:bg-[var(--card)] flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">You&apos;ve completed Cohort 1</p>
+                <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Congratulations. Keep building.</p>
+              </div>
+              <Link
+                href={OVERVIEW}
+                className="inline-flex items-center gap-2 shrink-0 bg-[var(--charcoal-900)] dark:bg-white text-[var(--beige-50)] dark:text-[var(--charcoal-900)] text-sm font-medium px-4 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+              >
+                Back to course
+                <ArrowRight className="size-3.5" />
+              </Link>
             </div>
-            <Link
-              href={NEXT}
-              className="inline-flex items-center gap-2 shrink-0 bg-[var(--charcoal-900)] dark:bg-white text-[var(--beige-50)] dark:text-[var(--charcoal-900)] text-sm font-medium px-4 py-2.5 rounded-full hover:opacity-90 transition-opacity"
-            >
-              Next
-              <ArrowRight className="size-3.5" />
-            </Link>
           </div>
         </main>
 

@@ -5,19 +5,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CodeTabs } from "@/components/animate-ui/components/animate/code-tabs";
 
 const SESSION = {
-  tag: "W1 · S1",
+  tag: "W1 · S2",
   color: "#C4A882",
   weekLabel: "Week 1 · Knowing Claude",
-  title: "The interface, Projects, your first conversation",
-  date: "Sat, Jun 6",
+  title: "Custom instructions, file uploads",
+  date: "Sun, Jun 7",
   time: "10 AM–1 PM EST",
   videoUrl: null as string | null,
   description:
-    "We start with the interface itself — getting oriented in Claude.ai, understanding how Projects differ from conversations, and building your first real exchange with Claude using your actual business context.",
+    "You'll write your first custom instructions, upload the files that shape Claude's responses, and configure your brand voice. By the end of this session you'll have all 3 of your Claude.ai Projects ready to use.",
   resources: [
-    { label: "Session slides", href: "#" },
-    { label: "Claude.ai interface guide", href: "#" },
-    { label: "Projects quick-start", href: "#" },
+    { label: "Custom instructions template", href: "#" },
+    { label: "Brand voice worksheet", href: "#" },
+    { label: "Week 1 deliverable checklist", href: "#" },
   ],
 };
 
@@ -25,64 +25,79 @@ const OVERVIEW = "/participant/courses/cohort-1";
 const PREV     = "/participant/courses/cohort-1/session-2";
 const NEXT     = "/participant/courses/cohort-1/session-4";
 
-const objectives = [
-  "Navigate the Claude.ai interface confidently",
-  "Understand the difference between a Project and a conversation",
-  "Start a meaningful business conversation with Claude",
-  "Leave with Claude knowing your actual business context",
-];
-
 const bringList = [
-  "Claude.ai account — logged in and ready",
-  "Your Bootcamp Map answers from the intake form",
-  "3 real problems from your business you want help with",
+  "Your Project from Session 1 open in Claude.ai",
+  "A writing sample in your voice (email, proposal, or social post)",
+  "One SOP, process doc, or FAQ (PDF, Word, or plain text)",
+  "Your Bootcamp Map answers for reference",
 ];
 
-const steps_project = [
-  "Go to claude.ai and sign in",
-  'Click "Projects" in the left sidebar',
-  'Click "New Project" and name it after your business (e.g. "Acme Co — General")',
-  "You're now inside a Project — any files or instructions you add here will persist across every conversation in this Project",
-  "Leave the Project open for the exercises below",
+const objectives = [
+  "Write custom instructions that shape every conversation in a Project",
+  "Know which documents to upload — and why",
+  "Understand how Claude uses uploaded files in practice",
+  "Complete all 3 configured Claude.ai Projects",
+];
+
+const projects = [
+  { name: "Client-Facing Work", purpose: "Writing, emails, proposals, content — anything a client might read" },
+  { name: "Internal Operations", purpose: "SOPs, processes, team communication, checklists, planning" },
+  { name: "Thinking Partner", purpose: "Strategy, decisions, analysis, brainstorming — your confidential advisor" },
+];
+
+const uploadGuide = [
+  { file: "A writing sample", why: "Teaches Claude your tone and voice so it writes the way you actually sound" },
+  { file: "Service or product descriptions", why: "Claude describes what you offer accurately, not generically" },
+  { file: "An SOP or process doc", why: "Claude follows your process, not a generic best practice" },
+  { file: "Client FAQ or common questions", why: "Claude answers using your actual answers, not guesses" },
 ];
 
 const PROMPTS: Record<string, string> = {
-  "Orient Claude to my business": `I run a [type of business — e.g. coaching practice, e-commerce store, design agency].
+  "Custom instructions template": `You are my business assistant for [Business Name].
 
-Here's the context you need to work with me effectively:
+ABOUT MY BUSINESS:
+[2–3 sentences: what you do, who you serve, how you're different from competitors]
 
-Business: [describe what you do in 2–3 sentences]
-Customers: [who you serve and what they hire you to do]
-Team size: [solo / small team of ___]
-My biggest current challenge: [one clear, specific problem]
-My goal for this bootcamp: [what I want to walk away able to do]
+MY CUSTOMERS:
+[Describe your ideal client — their situation, what they're trying to solve, how they make decisions]
 
-From now on in this Project, use this context to give me specific, relevant advice — not generic tips.
+TONE AND STYLE:
+- Voice: [formal / conversational / warm / direct — pick one that fits you]
+- Write like: [describe your communication style in 1 sentence, or paste an example phrase]
+- Response format: [brief bullets / full paragraphs / depends on task — tell Claude your preference]
+- Response length: [short and punchy / thorough and detailed / match the task]
 
-Before we start, ask me one clarifying question that would help you give me better answers.`,
+ALWAYS:
+- Reference my business context when giving advice — no generic tips
+- Ask one clarifying question before writing anything client-facing
+- Flag when you're uncertain or when something needs my review before it goes out
+- Use the tone from my uploaded writing sample
 
-  "Your first real ask": `Based on the business context I just gave you, help me with this specific task:
+NEVER:
+- Make up facts about my business, my offers, or my clients
+- Use corporate jargon or buzzwords I haven't used myself
+- Send anything to a client without noting it needs my approval first
+- Start responses with "Certainly!" or "Great question!"`,
 
-[Describe one task or problem from your actual business. Be specific — not "help me with marketing" but "help me write a follow-up email for a prospect who went quiet after our discovery call."]
+  "Ask Claude to improve your instructions": `I've just written my custom instructions for this Project. Read them carefully, then tell me:
 
-Format your response as:
-1. Your recommendation
-2. The specific steps I should take
-3. One thing to watch out for
+1. What's clear and well-defined (what you can do confidently with these instructions)
+2. What's vague or missing (where you'd have to guess)
+3. What one addition would make you 20% more useful to me
 
-Keep it practical. I should be able to act on this today.`,
+Then suggest a revised version of any weak section.`,
 
-  "Test Claude's understanding": `Before we go further, I want to check what you know about me.
+  "Check Claude knows your business": `Based on my custom instructions and any files I've uploaded, summarize:
 
-Summarize my business in your own words — what I do, who I serve, and what I'm working on.
+1. What you know about my business (be specific — not general)
+2. What types of tasks you can handle confidently in this Project
+3. What you're still uncertain about
+4. One file or piece of information that, if I added it, would make you significantly more useful
 
-Then tell me:
-- What types of tasks you think I should use you for most in this bootcamp
-- What information you're still missing that would make you more useful
-- One question you'd want me to answer before our next conversation`,
+If anything in my instructions is contradictory or unclear, flag it now.`,
 };
 
-export default function Session3Page() {
+export default function Session4Page() {
   return (
     <div className="flex-1 bg-[var(--beige-50)] dark:bg-background flex flex-col overflow-hidden min-h-0">
 
@@ -93,7 +108,7 @@ export default function Session3Page() {
           className="inline-flex items-center gap-1.5 text-sm text-[var(--taupe-400)] hover:text-[var(--charcoal-900)] dark:hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
-          Intake
+          W1 · S1
         </Link>
 
         <div className="flex items-center gap-2">
@@ -112,7 +127,7 @@ export default function Session3Page() {
           href={NEXT}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground hover:opacity-70 transition-opacity"
         >
-          W1 · S2
+          W2 · S3
           <ArrowRight className="size-3.5" />
         </Link>
       </header>
@@ -149,64 +164,76 @@ export default function Session3Page() {
             </div>
           </section>
 
-          {/* Why this matters */}
+          {/* What are custom instructions */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Why this session matters</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What custom instructions actually do</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                The participants who get the most out of Claude aren&apos;t the ones who use it the most — they&apos;re the ones who use it right from the start. That means treating Claude like a thinking partner, not a search engine. Vague questions get generic answers. Specific context gets specific, useful output.
+                Custom instructions are text that Claude reads <strong className="font-medium">before every single message</strong> in a Project. Think of them as the onboarding document you&apos;d give a new contractor on their first day — who you are, how you work, what you expect, and what not to do.
               </p>
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                This session is about building that muscle. By the time you finish today, Claude will know enough about your business to give you advice that actually applies to you — not generic tips you could find anywhere.
+                Without custom instructions, every message starts from scratch. Claude doesn&apos;t know if you want bullet points or paragraphs, formal or casual, long-form or brief. With them, Claude already knows — and it shows in every response.
               </p>
-            </div>
-          </section>
-
-          {/* Projects vs Conversations */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Projects vs. conversations — the key difference</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-4">
-              <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                When you start a new conversation on Claude.ai, Claude has zero memory of you, your business, or anything you&apos;ve discussed before. Every new chat starts cold. For one-off questions, that&apos;s fine. For running your business, it&apos;s a problem.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4 flex flex-col gap-1.5">
-                  <p className="text-xs font-semibold text-[var(--taupe-400)] uppercase tracking-[0.12em]">Conversation</p>
-                  <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed font-light">Starts fresh every time. Claude knows nothing about you. You have to re-explain your context in every session.</p>
-                </div>
-                <div className="rounded-xl border border-[var(--clay-500)]/30 bg-[var(--clay-500)]/5 p-4 flex flex-col gap-1.5">
-                  <p className="text-xs font-semibold text-[var(--clay-500)] uppercase tracking-[0.12em]">Project ✓</p>
-                  <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed font-light">A persistent room where your files, custom instructions, and business context always live. Claude walks in already briefed.</p>
-                </div>
+              <div className="rounded-xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-white/[0.02] p-4">
+                <p className="text-xs font-semibold text-[var(--taupe-400)] uppercase tracking-[0.12em] mb-2">The four parts of great custom instructions</p>
+                <ol className="flex flex-col gap-2">
+                  {[
+                    { label: "WHO YOU ARE", desc: "2–3 sentences about your business, your customers, and your role" },
+                    { label: "TONE & STYLE", desc: "How you communicate — voice, format, response length" },
+                    { label: "ALWAYS DO", desc: "What Claude should always do in this Project" },
+                    { label: "NEVER DO", desc: "What Claude should never do — your non-negotiables" },
+                  ].map((part, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <span className="font-semibold text-[var(--charcoal-900)] dark:text-foreground shrink-0 min-w-[90px]">{part.label}</span>
+                      <span className="text-[var(--taupe-400)] font-light">{part.desc}</span>
+                    </li>
+                  ))}
+                </ol>
               </div>
+            </div>
+          </section>
+
+          {/* What to upload */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">What to upload — and why</p>
+            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex flex-col gap-3">
               <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed">
-                Think of a Project like hiring a contractor who keeps all your notes on file. Every time they show up, they already know your preferences, your style, and what you&apos;re working on. That&apos;s what we&apos;re building today.
+                Files you upload to a Project stay there permanently. Claude can reference them in every conversation. The goal is to give Claude the same reference materials you&apos;d give a new team member.
               </p>
-            </div>
-          </section>
-
-          {/* Create your first Project */}
-          <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Create your first Project — step by step</p>
-            <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
-              <ol className="flex flex-col gap-3">
-                {steps_project.map((step, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="size-6 shrink-0 rounded-full bg-[var(--beige-100)] dark:bg-white/5 border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[11px] font-semibold text-[var(--taupe-400)]">
-                      {i + 1}
-                    </span>
-                    <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground leading-relaxed pt-0.5">{step}</p>
-                  </li>
+              <div className="flex flex-col gap-2">
+                {uploadGuide.map((item) => (
+                  <div key={item.file} className="flex items-start gap-3 py-2 border-b border-[var(--beige-200)] dark:border-white/5 last:border-0">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">{item.file}</p>
+                      <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">{item.why}</p>
+                    </div>
+                  </div>
                 ))}
-              </ol>
+              </div>
+              <p className="text-xs text-[var(--taupe-400)] font-light">Accepted formats: PDF, Word, plain text, markdown. Keep files under 25 MB.</p>
             </div>
           </section>
 
-          {/* Prompts to copy */}
+          {/* Three Projects */}
           <section className="flex flex-col gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — copy and use these in your Project</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your 3 Projects — what each one is for</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {projects.map((p, i) => (
+                <div key={p.name} className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-4 flex flex-col gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--taupe-400)]">Project {i + 1}</span>
+                  <p className="font-medium text-sm text-[var(--charcoal-900)] dark:text-foreground">{p.name}</p>
+                  <p className="text-xs text-[var(--taupe-400)] font-light leading-relaxed">{p.purpose}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-[var(--taupe-400)] font-light">Each Project gets its own custom instructions tailored to its purpose. The Client-Facing Project should be more formal; the Thinking Partner can be direct and candid.</p>
+          </section>
+
+          {/* Prompts */}
+          <section className="flex flex-col gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Prompts — copy and use these</p>
             <p className="text-sm text-[var(--taupe-400)] -mt-1">
-              Start with <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Orient Claude to my business</strong> — paste it into your new Project, fill in the blanks, and send. Then follow with the next two in order.
+              Start with the <strong className="text-[var(--charcoal-900)] dark:text-foreground font-medium">Custom instructions template</strong> — paste it into your Project&apos;s custom instructions, fill in every bracket, and save. Then use the other two to verify and refine.
             </p>
             <CodeTabs codes={PROMPTS} lang="markdown" />
           </section>
@@ -215,14 +242,14 @@ export default function Session3Page() {
           <section className="flex flex-col gap-3">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)]">Your exercise for this session</p>
             <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-100)] dark:bg-[var(--card)] p-5 flex flex-col gap-3">
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Do this before Session 2:</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Complete before Week 2:</p>
               <ol className="flex flex-col gap-2">
                 {[
-                  "Create a Project named after your business (or just \"My Business — General\")",
-                  "Paste the \"Orient Claude to my business\" prompt, fill it in with your real details, and send it",
-                  "Answer Claude's clarifying question honestly",
-                  "Use \"Your first real ask\" to get help with one actual task from your business this week",
-                  "Paste the \"Test Claude's understanding\" prompt to see how well Claude has internalized your context",
+                  "Write custom instructions for your Client-Facing Project using the template above",
+                  "Upload at least one file (writing sample or SOP) to that Project",
+                  "Use the \"Check Claude knows your business\" prompt to verify Claude got it right",
+                  "Create Projects 2 and 3 with their own tailored custom instructions",
+                  "Add at least one file to each Project",
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--charcoal-900)] dark:text-foreground">
                     <span className="size-5 shrink-0 rounded-full border border-[var(--beige-200)] dark:border-white/10 flex items-center justify-center text-[10px] font-semibold text-[var(--taupe-400)] mt-0.5">{i + 1}</span>
@@ -230,17 +257,22 @@ export default function Session3Page() {
                   </li>
                 ))}
               </ol>
-              <p className="text-xs text-[var(--taupe-400)] font-light">
-                Share the most surprising insight Claude gave you in the cohort group chat.
-              </p>
             </div>
           </section>
+
+          {/* Deliverable */}
+          <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--taupe-400)] mb-2">Week 1 Deliverable</p>
+            <p className="text-sm text-[var(--charcoal-900)] dark:text-foreground font-light leading-relaxed">
+              3 configured Claude.ai Projects — each with custom instructions and at least one uploaded file that makes Claude context-aware for that type of work.
+            </p>
+          </div>
 
           {/* Next session card */}
           <div className="rounded-2xl border border-[var(--beige-200)] dark:border-white/5 bg-white dark:bg-[var(--card)] p-5 flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: Custom instructions, file uploads</p>
-              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 1 · Session 2 — Sun, Jun 7</p>
+              <p className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground">Up next: AI employees — what Cowork makes real</p>
+              <p className="text-xs text-[var(--taupe-400)] font-light mt-0.5">Week 2 · Session 3 — Sat, Jun 13</p>
             </div>
             <Link
               href={NEXT}

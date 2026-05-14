@@ -1,15 +1,17 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { ParticipantShell } from "@/components/dashboard/participant-shell";
+import CohortIntakeForm from "@/components/cohort1/CohortIntakeForm";
 
-export default async function ParticipantLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const metadata = {
+  title: "Getting Started · TalentMucho",
+  robots: { index: false },
+};
+
+export default async function OnboardingPage() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -22,17 +24,11 @@ export default async function ParticipantLayout({
     .eq("user_id", user.id)
     .maybeSingle();
 
-  if (!intake) redirect("/onboarding");
-
-  const fullName =
-    user.user_metadata?.full_name ||
-    user.email?.split("@")[0] ||
-    "Participant";
-  const email = user.email ?? "";
+  if (intake) redirect("/participant");
 
   return (
-    <ParticipantShell fullName={fullName} email={email}>
-      {children}
-    </ParticipantShell>
+    <div className="min-h-screen flex flex-col">
+      <CohortIntakeForm onboardingMode />
+    </div>
   );
 }

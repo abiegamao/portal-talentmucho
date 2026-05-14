@@ -116,7 +116,7 @@ export default function Cohort1Page() {
             <div className="h-full rounded-full bg-[var(--clay-500)]" style={{ width: `${progress}%` }} />
           </div>
           <a
-            href="/participant/courses/cohort-1/session-4"
+            href="/participant/courses/cohort-1/session-3"
             className="mt-1 inline-flex items-center justify-center gap-2 bg-[var(--charcoal-900)] dark:bg-white text-[var(--beige-50)] dark:text-[var(--charcoal-900)] text-sm font-medium px-4 py-2.5 rounded-full hover:opacity-90 transition-opacity w-full"
           >
             Join next session
