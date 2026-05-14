@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
-type Response = {
+export type IntakeResponse = {
   id: string;
   user_id: string;
   first_name: string | null;
@@ -53,6 +53,12 @@ const PEAK_LABELS: Record<string, string> = {
   late_night: "Late night (9 PM+)",
 };
 
+const VOICE_LABELS: Record<string, string> = {
+  mine: "Mine (personal brand)",
+  company: "My company's",
+  both: "Both",
+};
+
 function Field({ label, value }: { label: string; value: string | null | undefined }) {
   if (!value) return null;
   return (
@@ -67,7 +73,7 @@ function Field({ label, value }: { label: string; value: string | null | undefin
   );
 }
 
-function ExpandedRow({ r }: { r: Response }) {
+function ExpandedRow({ r }: { r: IntakeResponse }) {
   const metrics = (r.dashboard_metrics ?? [])
     .map((m) => METRIC_LABELS[m] ?? m)
     .join(", ");
@@ -75,7 +81,7 @@ function ExpandedRow({ r }: { r: Response }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 px-6 pb-5 pt-1">
       <Field label="Business one-liner" value={r.business_oneliner} />
-      <Field label="Voice owner" value={r.voice_owner} />
+      <Field label="Voice owner" value={VOICE_LABELS[r.voice_owner ?? ""] ?? r.voice_owner} />
       <Field
         label="AI employee role"
         value={
@@ -95,6 +101,7 @@ function ExpandedRow({ r }: { r: Response }) {
             : null
         }
       />
+      <Field label="OS" value={r.os ? r.os.charAt(0).toUpperCase() + r.os.slice(1) : null} />
       <Field label="Timezone" value={r.timezone} />
       <Field label="Peak time" value={PEAK_LABELS[r.peak_time ?? ""] ?? r.peak_time} />
       <div className="sm:col-span-2 lg:col-span-3">
@@ -104,7 +111,7 @@ function ExpandedRow({ r }: { r: Response }) {
   );
 }
 
-export function ResponsesTable({ responses }: { responses: Response[] }) {
+export function ResponsesTable({ responses }: { responses: IntakeResponse[] }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   function toggle(id: string) {
@@ -119,7 +126,7 @@ export function ResponsesTable({ responses }: { responses: Response[] }) {
     return (
       <div className="rounded-2xl border border-[var(--beige-200)] dark:border-[var(--border)] bg-white dark:bg-[var(--card)] p-12 text-center">
         <p className="text-sm text-[var(--taupe-400)] font-light">
-          No intake responses yet.
+          No onboarding responses yet.
         </p>
       </div>
     );
@@ -127,14 +134,11 @@ export function ResponsesTable({ responses }: { responses: Response[] }) {
 
   return (
     <div className="rounded-2xl border border-[var(--beige-200)] dark:border-[var(--border)] bg-white dark:bg-[var(--card)] overflow-hidden">
-      {/* Table header */}
-      <div className="grid grid-cols-[auto_1fr_1fr_80px_80px_100px] gap-4 px-6 py-3 border-b border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-[var(--charcoal-900)]/30">
+      {/* Header */}
+      <div className="grid grid-cols-[auto_1fr_1fr_140px_80px_100px] gap-4 px-6 py-3 border-b border-[var(--beige-200)] dark:border-white/5 bg-[var(--beige-50)] dark:bg-[var(--charcoal-900)]/30">
         <span className="w-4" />
         {["Name", "Email", "First Focus", "OS", "Submitted"].map((h) => (
-          <p
-            key={h}
-            className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--taupe-400)]"
-          >
+          <p key={h} className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--taupe-400)]">
             {h}
           </p>
         ))}
@@ -143,51 +147,38 @@ export function ResponsesTable({ responses }: { responses: Response[] }) {
       {responses.map((r) => {
         const isOpen = expanded.has(r.id);
         return (
-          <div
-            key={r.id}
-            className="border-b border-[var(--beige-100)] dark:border-white/5 last:border-0"
-          >
-            {/* Main row */}
+          <div key={r.id} className="border-b border-[var(--beige-100)] dark:border-white/5 last:border-0">
             <button
               onClick={() => toggle(r.id)}
-              className="w-full grid grid-cols-[auto_1fr_1fr_80px_80px_100px] gap-4 px-6 py-4 text-left hover:bg-[var(--beige-50)] dark:hover:bg-white/[0.02] transition-colors"
+              className="w-full grid grid-cols-[auto_1fr_1fr_140px_80px_100px] gap-4 px-6 py-4 text-left hover:bg-[var(--beige-50)] dark:hover:bg-white/[0.02] transition-colors"
             >
               <span className="flex items-center">
-                {isOpen ? (
-                  <ChevronDown className="size-3.5 text-[var(--taupe-400)]" />
-                ) : (
-                  <ChevronRight className="size-3.5 text-[var(--taupe-400)]" />
-                )}
+                {isOpen
+                  ? <ChevronDown className="size-3.5 text-[var(--taupe-400)]" />
+                  : <ChevronRight className="size-3.5 text-[var(--taupe-400)]" />
+                }
               </span>
-
               <span className="text-sm font-medium text-[var(--charcoal-900)] dark:text-foreground truncate">
                 {r.first_name ?? "—"}
               </span>
-
               <span className="text-sm text-[var(--taupe-400)] font-light truncate">
                 {r.email ?? "—"}
               </span>
-
               <span className="text-xs text-[var(--taupe-400)] font-light">
                 {FOCUS_LABELS[r.first_focus ?? ""] ?? r.first_focus ?? "—"}
               </span>
-
               <span className="text-xs text-[var(--taupe-400)] font-light capitalize">
                 {r.os ?? "—"}
               </span>
-
               <span className="text-xs text-[var(--taupe-400)] font-light">
                 {r.submitted_at
                   ? new Date(r.submitted_at).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
+                      month: "short", day: "numeric", year: "numeric",
                     })
                   : "—"}
               </span>
             </button>
 
-            {/* Expanded details */}
             {isOpen && (
               <div className="bg-[var(--beige-50)] dark:bg-white/[0.02] border-t border-[var(--beige-100)] dark:border-white/5">
                 <ExpandedRow r={r} />

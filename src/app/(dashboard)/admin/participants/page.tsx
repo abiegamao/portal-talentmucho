@@ -2,13 +2,14 @@ import { cookies } from "next/headers";
 import { Users, BookOpen } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { type Participant, type Course } from "./columns";
-import { ParticipantsTable } from "./participants-table";
+import { type IntakeResponse } from "./responses-table";
+import { ParticipantsPageTabs } from "./participants-page-tabs";
 
 export default async function ParticipantsPage() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
-  const [profilesRes, coursesRes, enrollmentsRes] = await Promise.all([
+  const [profilesRes, coursesRes, enrollmentsRes, intakeRes] = await Promise.all([
     supabase
       .from("profiles")
       .select("id, full_name, email, created_at")
@@ -20,11 +21,16 @@ export default async function ParticipantsPage() {
       .eq("is_published", true)
       .order("order_index"),
     supabase.from("enrollments").select("participant_id, course_id"),
+    supabase
+      .from("intake_responses")
+      .select("*")
+      .order("submitted_at", { ascending: false }),
   ]);
 
   const profiles = profilesRes.data ?? [];
   const courses: Course[] = (coursesRes.data ?? []) as Course[];
   const enrollments = enrollmentsRes.data ?? [];
+  const intakeResponses: IntakeResponse[] = (intakeRes.data ?? []) as IntakeResponse[];
 
   const enrollmentMap: Record<string, string[]> = {};
   for (const e of enrollments) {
@@ -67,9 +73,7 @@ export default async function ParticipantsPage() {
       {/* Summary chips */}
       <div className="flex items-center gap-3 flex-wrap mb-8">
         <div className="flex items-center gap-2 px-4 py-2 rounded-xl border bg-[var(--beige-100)] dark:bg-[var(--card)] border-[var(--beige-200)] dark:border-[var(--border)]">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">
-            Total
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">Total</span>
           <span className="text-sm font-semibold text-[var(--charcoal-900)] dark:text-foreground">
             {participants.length}
           </span>
@@ -77,35 +81,36 @@ export default async function ParticipantsPage() {
 
         <div className="flex items-center gap-2 px-4 py-2 rounded-xl border bg-[rgb(125_107_90/0.08)] border-[rgb(125_107_90/0.2)]">
           <BookOpen className="size-3 text-[var(--clay-500)]" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--clay-500)]">
-            Has Access
-          </span>
-          <span className="text-sm font-semibold text-[var(--clay-500)]">
-            {totalWithAccess}
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--clay-500)]">Has Access</span>
+          <span className="text-sm font-semibold text-[var(--clay-500)]">{totalWithAccess}</span>
         </div>
 
         <div className="flex items-center gap-2 px-4 py-2 rounded-xl border bg-[var(--beige-100)] dark:bg-[var(--card)] border-[var(--beige-200)] dark:border-[var(--border)]">
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--taupe-400)]" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">
-            No Access
-          </span>
-          <span className="text-sm font-semibold text-[var(--taupe-400)]">
-            {totalNoAccess}
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">No Access</span>
+          <span className="text-sm font-semibold text-[var(--taupe-400)]">{totalNoAccess}</span>
         </div>
 
         <div className="flex items-center gap-2 px-4 py-2 rounded-xl border bg-[var(--beige-100)] dark:bg-[var(--card)] border-[var(--beige-200)] dark:border-[var(--border)]">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">
-            Courses
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">Courses</span>
           <span className="text-sm font-semibold text-[var(--charcoal-900)] dark:text-foreground">
             {courses.length}
           </span>
         </div>
+
+        <div className="flex items-center gap-2 px-4 py-2 rounded-xl border bg-[var(--beige-100)] dark:bg-[var(--card)] border-[var(--beige-200)] dark:border-[var(--border)]">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">Onboarded</span>
+          <span className="text-sm font-semibold text-[var(--charcoal-900)] dark:text-foreground">
+            {intakeResponses.length}
+          </span>
+        </div>
       </div>
 
-      <ParticipantsTable participants={participants} courses={courses} />
+      <ParticipantsPageTabs
+        participants={participants}
+        courses={courses}
+        intakeResponses={intakeResponses}
+      />
     </div>
   );
 }
