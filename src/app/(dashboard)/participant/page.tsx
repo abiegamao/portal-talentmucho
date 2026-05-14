@@ -39,10 +39,7 @@ export default async function ParticipantDashboard() {
       {/* Welcome */}
       <div className="relative mb-8 px-5 pt-6 pb-0 sm:px-8 sm:pt-8 flex items-end justify-between gap-4">
 
-        {/* Accent rule */}
-        <div className="absolute bottom-0 left-0 w-32 h-px bg-gradient-to-r from-[var(--taupe-400)] to-transparent opacity-40" />
-
-        <div className="relative z-10 pb-6 sm:pb-8">
+<div className="relative z-10 pb-6 sm:pb-8">
           <span className="tm-eyebrow block mb-2">{timeGreeting}</span>
           <h2
             className="font-serif font-light"
@@ -73,6 +70,9 @@ export default async function ParticipantDashboard() {
           priority
         />
       </div>
+
+      {/* Separator */}
+      <div className="my-8 h-px bg-gradient-to-r from-transparent via-[var(--beige-200)] dark:via-white/10 to-transparent" />
 
       {/* Courses */}
       <div>
