@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { KeyRound } from "lucide-react";
+import { Award, KeyRound } from "lucide-react";
 import { buildColumns, type Participant, type Course } from "./columns";
 import { DataTable } from "./data-table";
 import { CourseAccessDialog } from "./course-access-dialog";
+import { IssueCertificateDialog } from "./issue-certificate-dialog";
 import {
   ContextMenuItem,
   ContextMenuLabel,
@@ -18,6 +19,7 @@ interface Props {
 
 export function ParticipantsTable({ participants, courses }: Props) {
   const [selected, setSelected] = useState<Participant | null>(null);
+  const [certTarget, setCertTarget] = useState<Participant | null>(null);
   const columns = buildColumns(courses);
 
   return (
@@ -39,6 +41,10 @@ export function ParticipantsTable({ participants, courses }: Props) {
               <KeyRound className="size-3.5" />
               Manage access
             </ContextMenuItem>
+            <ContextMenuItem onSelect={() => setCertTarget(p)}>
+              <Award className="size-3.5" />
+              Issue certificate
+            </ContextMenuItem>
             <ContextMenuSeparator />
             <ContextMenuItem variant="destructive">Remove</ContextMenuItem>
           </>
@@ -51,6 +57,15 @@ export function ParticipantsTable({ participants, courses }: Props) {
           participant={selected}
           courses={courses}
           enrolledCourseIds={selected.enrolledCourseIds}
+        />
+      )}
+      {certTarget && (
+        <IssueCertificateDialog
+          open={true}
+          onOpenChange={(open) => !open && setCertTarget(null)}
+          participant={certTarget}
+          courses={courses}
+          certificateCourseIds={certTarget.certificateCourseIds}
         />
       )}
     </>

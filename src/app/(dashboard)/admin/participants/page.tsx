@@ -9,7 +9,7 @@ export default async function ParticipantsPage() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
-  const [profilesRes, coursesRes, enrollmentsRes, intakeRes] = await Promise.all([
+  const [profilesRes, coursesRes, enrollmentsRes, intakeRes, certificatesRes] = await Promise.all([
     supabase
       .from("profiles")
       .select("id, full_name, email, created_at")
@@ -25,12 +25,14 @@ export default async function ParticipantsPage() {
       .from("intake_responses")
       .select("*")
       .order("submitted_at", { ascending: false }),
+    supabase.from("certificates").select("participant_id, course_id"),
   ]);
 
   const profiles = profilesRes.data ?? [];
   const courses: Course[] = (coursesRes.data ?? []) as Course[];
   const enrollments = enrollmentsRes.data ?? [];
   const intakeResponses: IntakeResponse[] = (intakeRes.data ?? []) as IntakeResponse[];
+  const certificates = certificatesRes.data ?? [];
 
   const enrollmentMap: Record<string, string[]> = {};
   for (const e of enrollments) {
@@ -38,11 +40,18 @@ export default async function ParticipantsPage() {
     enrollmentMap[e.participant_id].push(e.course_id);
   }
 
+  const certificateMap: Record<string, string[]> = {};
+  for (const c of certificates) {
+    if (!certificateMap[c.participant_id]) certificateMap[c.participant_id] = [];
+    certificateMap[c.participant_id].push(c.course_id);
+  }
+
   const participants: Participant[] = profiles.map((p) => ({
     id: p.id,
     name: p.full_name ?? p.email,
     email: p.email,
     enrolledCourseIds: enrollmentMap[p.id] ?? [],
+    certificateCourseIds: certificateMap[p.id] ?? [],
     enrolledAt: p.created_at,
   }));
 

@@ -83,8 +83,8 @@ export function AdminSidebar({ onClose, collapsed, onToggleCollapse }: Props) {
               <Image
                 src="/tm-logo.png"
                 alt="TalentMucho"
-                width={96}
-                height={24}
+                width={72}
+                height={18}
                 className="object-contain"
               />
               <span

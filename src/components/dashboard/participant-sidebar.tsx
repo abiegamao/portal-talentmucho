@@ -82,9 +82,9 @@ export function ParticipantSidebar({ onClose, collapsed, onToggleCollapse }: Pro
             <Image
               src="/tm-logo.png"
               alt="TalentMucho"
-              width={96}
-              height={24}
-              className="object-contain "
+              width={72}
+              height={18}
+              className="object-contain"
             />
 
             <div className="flex items-center gap-1 shrink-0">

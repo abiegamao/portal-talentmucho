@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, BookOpen } from "lucide-react";
+import { ArrowUpDown, Award, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/animate-ui/components/radix/checkbox";
 import { type Course } from "./course-access-dialog";
@@ -13,6 +13,7 @@ export type Participant = {
   name: string;
   email: string;
   enrolledCourseIds: string[];
+  certificateCourseIds: string[];
   enrolledAt: string;
 };
 
@@ -98,6 +99,29 @@ export function buildColumns(courses: Course[]): ColumnDef<Participant>[] {
           </div>
         ) : (
           <span className="text-xs text-[var(--taupe-400)]">No access</span>
+        );
+      },
+      enableSorting: false,
+    },
+    {
+      accessorKey: "certificateCourseIds",
+      header: () => (
+        <span className="text-xs font-semibold uppercase tracking-wider text-[var(--taupe-400)]">
+          Certificates
+        </span>
+      ),
+      cell: ({ row }) => {
+        const ids: string[] = row.getValue("certificateCourseIds");
+        const count = ids.length;
+        return count > 0 ? (
+          <div className="flex items-center gap-1.5">
+            <Award className="size-3.5 text-[var(--clay-500)]" />
+            <span className="text-sm text-[var(--charcoal-900)] dark:text-foreground">
+              {count} cert{count !== 1 ? "s" : ""}
+            </span>
+          </div>
+        ) : (
+          <span className="text-xs text-[var(--taupe-400)]">None</span>
         );
       },
       enableSorting: false,
