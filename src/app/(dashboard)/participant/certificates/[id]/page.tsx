@@ -31,10 +31,11 @@ export default async function CertificatePage({
   type CertRow = {
     certificate_number: string;
     issued_at: string;
-    courses?: { title: string; slug: string; description: string | null } | null;
+    courses?: { title: string; slug: string; description: string | null } | { title: string; slug: string; description: string | null }[] | null;
   };
 
-  const c = cert as CertRow;
+  const c = cert as unknown as CertRow;
+  const course = Array.isArray(c.courses) ? c.courses[0] : c.courses;
 
   return (
     <div className="p-6 md:p-8">
@@ -42,9 +43,9 @@ export default async function CertificatePage({
         certificateNumber={c.certificate_number}
         issuedAt={c.issued_at}
         participantName={participantName}
-        courseTitle={c.courses?.title ?? ""}
-        courseSlug={c.courses?.slug ?? ""}
-        courseDescription={c.courses?.description ?? null}
+        courseTitle={course?.title ?? ""}
+        courseSlug={course?.slug ?? ""}
+        courseDescription={course?.description ?? null}
       />
     </div>
   );

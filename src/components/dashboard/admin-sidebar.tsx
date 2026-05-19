@@ -12,6 +12,8 @@ import {
   X,
   PanelLeftClose,
   PanelLeftOpen,
+  Bell,
+  LogOut,
 } from "lucide-react";
 import {
   TooltipProvider,
@@ -19,6 +21,17 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/animate-ui/components/animate/tooltip";
+import { useTransition } from "react";
+import { ThemeTogglerButton } from "@/components/animate-ui/components/buttons/theme-toggler";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/animate-ui/components/radix/dropdown-menu";
+import { logout } from "@/app/actions/auth";
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -29,13 +42,22 @@ const nav = [
 ];
 
 interface Props {
+  fullName: string;
+  email: string;
   onClose?: () => void;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
 }
 
-export function AdminSidebar({ onClose, collapsed, onToggleCollapse }: Props) {
+export function AdminSidebar({ fullName, email, onClose, collapsed, onToggleCollapse }: Props) {
   const pathname = usePathname();
+  const [, startTransition] = useTransition();
+  const initials = fullName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <aside
@@ -191,24 +213,69 @@ export function AdminSidebar({ onClose, collapsed, onToggleCollapse }: Props) {
         </TooltipProvider>
       </nav>
 
-      {/* Bottom decoration */}
-      {!collapsed && (
-        <div
-          className="px-6 py-5 shrink-0"
-          style={{ borderTop: "1px solid rgb(255 255 255 / 0.06)" }}
-        >
-          <p
-            className="text-xs leading-relaxed"
-            style={{ color: "rgb(255 255 255 / 0.2)" }}
+      {/* Bottom Profile / Actions */}
+      <div
+        className="shrink-0 p-3 flex flex-col gap-2"
+        style={{ borderTop: "1px solid rgb(255 255 255 / 0.08)" }}
+      >
+        <div className={["flex items-center gap-1", collapsed ? "flex-col" : "justify-between px-2"].join(" ")}>
+          <ThemeTogglerButton
+            modes={["light", "dark"]}
+            variant="ghost"
+            size="default"
+            className="w-9 h-9 rounded-xl hover:bg-white/10 text-white/45 hover:text-white/90 shrink-0"
+            aria-label="Toggle theme"
+          />
+          <button
+            className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-white/10 transition-all duration-150 shrink-0"
+            style={{ color: "rgb(255 255 255 / 0.45)" }}
+            aria-label="Notifications"
           >
-            Claude AI Bootcamp
-            <br />
-            by TalentMucho
-          </p>
+            <Bell className="size-4" />
+          </button>
         </div>
-      )}
 
-      {collapsed && <div className="py-4 shrink-0" />}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={["flex items-center gap-2 rounded-xl hover:bg-white/10 transition-all duration-150 text-left", collapsed ? "p-1.5 justify-center" : "p-2"].join(" ")}
+              aria-label="User menu"
+            >
+              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <span className="text-xs font-semibold text-white/70">
+                  {initials}
+                </span>
+              </div>
+              {!collapsed && (
+                <div className="flex flex-col min-w-0 overflow-hidden">
+                  <span className="text-sm font-medium text-white/90 truncate">
+                    {fullName.split(" ")[0]}
+                  </span>
+                  <span className="text-xs text-white/40 truncate">
+                    {email}
+                  </span>
+                </div>
+              )}
+            </button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align={collapsed ? "center" : "start"} side={collapsed ? "right" : "top"} className="w-56" sideOffset={12}>
+            <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
+              <span className="font-semibold text-sm text-foreground">{fullName}</span>
+              <span className="font-normal text-xs text-muted-foreground truncate">{email}</span>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              variant="destructive"
+              onSelect={() => startTransition(() => logout())}
+              className="cursor-pointer"
+            >
+              <LogOut className="mr-2 size-4" />
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </aside>
   );
 }
