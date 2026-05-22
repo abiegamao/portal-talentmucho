@@ -38,7 +38,11 @@ export function ParticipantsPageTabs({ participants, courses, intakeResponses }:
       <TabsContents>
         <TabsContent value="participants">
           <div className="pt-2">
-            <ParticipantsTable participants={participants} courses={courses} />
+            <ParticipantsTable
+              participants={participants}
+              courses={courses}
+              intakeResponses={intakeResponses}
+            />
           </div>
         </TabsContent>
 

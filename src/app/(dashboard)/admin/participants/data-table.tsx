@@ -34,6 +34,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   onRowClick?: (data: TData) => void;
   rowContextMenu?: (data: TData) => React.ReactNode;
+  onSelectionChange?: (selectedRows: TData[]) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -41,6 +42,7 @@ export function DataTable<TData, TValue>({
   data,
   onRowClick,
   rowContextMenu,
+  onSelectionChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -64,6 +66,16 @@ export function DataTable<TData, TValue>({
 
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
   const totalCount = table.getFilteredRowModel().rows.length;
+
+  const selectedRows = React.useMemo(() => {
+    return table.getFilteredSelectedRowModel().rows.map((r) => r.original);
+  }, [rowSelection, data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const selectedKeysStr = Object.keys(rowSelection).join(",");
+
+  React.useEffect(() => {
+    onSelectionChange?.(selectedRows);
+  }, [selectedKeysStr, selectedRows, onSelectionChange]);
 
   return (
     <div className="flex flex-col gap-4">

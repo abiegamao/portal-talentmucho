@@ -4,9 +4,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Award, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/animate-ui/components/radix/checkbox";
-import { type Course } from "./course-access-dialog";
 
-export type { Course };
+export type Course = {
+  id: string;
+  title: string;
+  slug: string;
+};
 
 export type Participant = {
   id: string;
