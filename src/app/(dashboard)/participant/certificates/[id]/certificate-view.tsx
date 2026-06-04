@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Download, FileImage } from "lucide-react";
+import { ArrowLeft, FileImage } from "lucide-react";
 
 // TM brand tokens (explicit hex — CSS vars not available in html2canvas)
 const C = {
@@ -59,43 +59,24 @@ export function CertificateView({
     ? courseDescription
     : "a comprehensive 4-week immersive curriculum exploring the foundations, practical delegation, and real-world integration of Claude AI within a modern business environment";
 
-  async function capture() {
-    if (!certRef.current) throw new Error("No ref");
-    const { default: html2canvas } = await import("html2canvas");
-    return html2canvas(certRef.current, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: C.beige50,
-      logging: false,
-    });
-  }
-
   async function downloadPNG() {
-    if (downloading) return;
+    if (!certRef.current || downloading) return;
     setDownloading(true);
     try {
-      const canvas = await capture();
+      const { toPng } = await import("html-to-image");
+      const dataUrl = await toPng(certRef.current, {
+        pixelRatio: 2,
+        backgroundColor: C.beige50,
+        style: {
+          transform: "scale(1)",
+        },
+      });
       const link = document.createElement("a");
       link.download = `${certificateNumber}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.href = dataUrl;
       link.click();
-    } finally {
-      setDownloading(false);
-    }
-  }
-
-  async function downloadPDF() {
-    if (downloading) return;
-    setDownloading(true);
-    try {
-      const canvas = await capture();
-      const { default: jsPDF } = await import("jspdf");
-      const w = canvas.width / 2;
-      const h = canvas.height / 2;
-      const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [w, h] });
-      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, h);
-      pdf.save(`${certificateNumber}.pdf`);
+    } catch (err) {
+      console.error("Failed to generate image", err);
     } finally {
       setDownloading(false);
     }
@@ -119,15 +100,7 @@ export function CertificateView({
             className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full border border-[var(--beige-200)] dark:border-white/10 bg-[var(--beige-100)] dark:bg-[var(--card)] text-[var(--charcoal-900)] dark:text-foreground hover:border-[var(--taupe-400)]/50 transition-all disabled:opacity-50"
           >
             <FileImage className="size-3.5" />
-            Save as Image
-          </button>
-          <button
-            onClick={downloadPDF}
-            disabled={downloading}
-            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full bg-[var(--charcoal-900)] dark:bg-white text-[var(--beige-50)] dark:text-[var(--charcoal-900)] hover:opacity-90 transition-opacity disabled:opacity-50"
-          >
-            <Download className="size-3.5" />
-            {downloading ? "Generating…" : "Download PDF"}
+            {downloading ? "Generating…" : "Save as Image"}
           </button>
         </div>
       </div>
